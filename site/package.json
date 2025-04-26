@@ -4,7 +4,7 @@
     "description": "site",
     "main": "index.js",
     "scripts": {
-      "build": "npm run build"
+      "build": "echo 'building project...'"
     },
     "author": "Fox",
     "license": "MIT"
