@@ -1,0 +1,12 @@
+{
+    "name": "parallax_engine",
+    "version": "1.0.0",
+    "description": "site",
+    "main": "index.js",
+    "scripts": {
+      "build": "npm run build"
+    },
+    "author": "Fox",
+    "license": "MIT"
+  }
+  
