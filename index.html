@@ -4,30 +4,175 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
     <style type="text/tailwindcss">
+
         @theme {
           --color-clifford: #da373d;
         }
       </style>
+      <style>
+@keyframes glowingCustom {
+  0% { background-position: 0 0; }
+  100% { background-position: 400% 0; }
+}
+
+.glow-text {
+  background: linear-gradient(90deg, #a855f7, #22d3ee, #4ade80, #a855f7);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowingCustom 6s linear infinite;
+  position: relative;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Aura domyślna */
+.glow-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  filter: blur(8px);
+  opacity: 0.5;
+  background: linear-gradient(90deg, #a855f7, #22d3ee, #4ade80, #a855f7);
+  background-size: 300% 300%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glowingCustom 6s linear infinite;
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+/* Po najechaniu: większa aura i mocniejszy glow */
+.glow-text:hover {
+  filter: drop-shadow(0 0 10px #22d3ee) drop-shadow(0 0 20px #a855f7);
+}
+
+.glow-text:hover::after {
+  filter: blur(12px);
+  opacity: 0.8;
+}
+.glow-border-button {
+  position: relative;
+  display: inline-block;
+  border-radius: 2rem;
+  background: linear-gradient(90deg, #a855f7, #22d3ee, #4ade80, #a855f7);
+  background-size: 400% 400%;
+  animation: glowingCustom 6s linear infinite;
+  text-decoration: none;
+}
+
+</style>
+
+
     <title>parallax enigne</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-[#141414]">
-    <div class="flex justify-center justify-evenly w-[80vw] mx-auto rounded-full">
-        <p class="text-white text-center">home</p>
-        <p class="text-white text-center">features</p>
-        <p class="text-white text-center">about me</p>
+<body class="bg-gray-950 text-white font-sans">
+
+    <!-- Landing Page -->
+<section class="h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-gray-900 to-gray-950 relative overflow-hidden">
+    <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z-0">
+        <source src="site/asset/13138099_1920_1080_30fps.mp4" type="video/mp4">
+    </video>
+    <h1 class="text-5xl md:text-7xl font-extrabold glow-text drop-shadow-lg relative z-10" data-text="Parallax Engine">
+        Parallax Engine
+    </h1>
+    <p class="mt-6 text-xl md:text-2xl text-gray-300 absolute">Intelligence Speed Infinity</p>
+    <div class="mt-20 flex gap-6 relative z-10">
+        <a href="#" class="hover:glow-text text-white px-6 py-3 rounded-2xl text-lg font-semibold transition glow-border-button transform transition-transform duration-300 hover:scale-105">loadstring</a>
+        <a href="#features" class="border border-indigo-500 glow-text px-6 py-3 rounded-2xl text-lg font-semibold transition transform transition-transform duration-300 hover:scale-105">See Features</a>
+
     </div>
 
-    <div class="flex items-center justify-center min-h-screen flex-col justify-evenly gap-y-4">
+    <div class="absolute bottom-0 w-full h-40 bg-gradient-to-b from-transparent to-black z-10"></div>
+</section>
 
-        <div flex flex-col>
-        <p class="text-white font-bold text-center mt-20 self-center text-5xl">parallax engine</p>
-        <p class="text-white">advanced ai engine</p>
+<!-- about script -->
+
+<div class="relative overflow-hidden">
+
+    <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z- opacity-40 filter blur-[5px] ">
+        <source src="site/asset/13138099_1920_1080_30fps.mp4" type="video/mp4">
+    </video>
+
+
+<section id="about" class="py-20 px-6 md:px-20 flex flex-col md:flex-row items-center gap-10 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-black/90 to-transparent z-10"></div>
+    <div class="relative z-10 flex-1">
+        <h2 class="text-4xl font-bold text-white mb-6 glow-text">What is Parallax Engine?</h2>
+        <p class="text-gray-300 leading-relaxed text-lg">Parallax Engine is a free AI script based on lua-u, designed to provide interactive AI that performs complex actions like dancing, jumping multiple times, and moving like a player</p>
+    </div>
+<!-- here -->
+</section>
+
+
+<!-- features -->
+<section id="features" class="py-20 px-6 md:px-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-black opacity-10 z-1"></div>
+
+    <div class="relative z-10">
+        <h2 class="text-4xl font-bold text-center mb-12 glow-text">Functions</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Card -->
+            <div class="p-6 bg-[#080808] bg-opacity-100 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
+                <h3 class="text-2xl font-semibold mb-4">Complex Action Handling</h3>
+                <p class="text-gray-300">Perform complex actions like dancing, jumping multiple times, and walking to specified locations.</p>
+            </div>
+
+            <div class="p-6 bg-[#080808] bg-opacity-60 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
+                <h3 class="text-2xl font-semibold mb-4">Player-Like Movement</h3>
+                <p class="text-gray-300">AI movement mimics that of a regular player, providing seamless interaction and behavior.</p>
+            </div>
+
+            <div class="p-6 bg-[#080808] bg-opacity-60 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
+                <h3 class="text-2xl font-semibold mb-4">Intelligent Following</h3>
+                <p class="text-gray-300">AI can intelligently decide whether to follow another player or not, adding strategic depth.</p>
+            </div>
+
+            <div class="p-6 bg-[#080808] bg-opacity-60 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
+                <h3 class="text-2xl font-semibold mb-4">Free AI Service</h3>
+                <p class="text-gray-300">Completely free AI service with no charges involved, offering powerful functionality at zero cost.</p>
+            </div>
         </div>
+    </div>
+</section>
 
-    <div class="flex mx-auto w-[80vw] h-[40vw] border-2 border-black bg-[#1a1a1a]">
-    </div> <!--things holder-->
+
+
+<!-- FAQ -->
+<section id="faq" class="py-20 px-6 md:px-20 relative overflow-hidden">
+    <div class="absolute inset-0 bg-black opacity-10 z-1"></div>
+    <div class="relative z-10">
+        <h2 class="text-4xl font-bold text-center mb-12 glow-text">FAQ</h2>
+        <div class="space-y-6 max-w-3xl mx-auto">
+            <details class="p-4 bg-[#080808] bg-opacity-80 rounded-2xl">
+                <summary class="cursor-pointer text-lg font-semibold">Will the parallax engine be always free?</summary>
+                <p class="mt-2 text-gray-300">I don't know, I don't plan on making money from it at the moment</p>
+            </details>
+            <details class="p-4 bg-[#080808] bg-opacity-80 rounded-2xl">
+                <summary class="cursor-pointer text-lg font-semibold">Are there any new features coming in the future?</summary>
+                <p class="mt-2 text-gray-300">Feel free to write suggestions, I'm out of ideas</p>
+            </details>
+            <details class="p-4 bg-[#080808] bg-opacity-80 rounded-2xl">
+                <summary class="cursor-pointer text-lg font-semibold">When will you give a tutorial on AI voice(text to speech)?</summary>
+                <p class="mt-2 text-gray-300">I will do it once I understand the requirement</p>
+            </details>
+        </div>
+    </div>
+</section>
+
+
+<!-- footer -->
+<footer class="py-8 text-center text-gray-400 text-sm relative overflow-hidden">
+    <div class="absolute inset-0 bg-black opacity-10 z-1"></div>
+    <div class="relative z-10">
+        Made with love by foxvfoxy aka imsqu
+    </div>
+</footer>
 </div>
+
+
 </body>
 </html>
