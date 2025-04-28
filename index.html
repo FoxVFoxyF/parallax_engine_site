@@ -27,7 +27,6 @@
   transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
-/* Aura domyślna */
 .glow-text::after {
   content: attr(data-text);
   position: absolute;
@@ -44,7 +43,6 @@
   transition: filter 0.3s ease, opacity 0.3s ease;
 }
 
-/* Po najechaniu: większa aura i mocniejszy glow */
 .glow-text:hover {
   filter: drop-shadow(0 0 10px #22d3ee) drop-shadow(0 0 20px #a855f7);
 }
@@ -63,6 +61,66 @@
   text-decoration: none;
 }
 
+#loadstring-container-glow-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1.5rem;
+  z-index: 10;
+}
+
+#loadstring-container-glow {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  padding: 3px;
+  border-radius: 1rem;
+  background: linear-gradient(90deg,
+    #ff2400,
+    #e81d1d,
+    #e8b71d,
+    #e3e81d,
+    #1de840,
+    #1ddde8,
+    #2b1de8,
+    #dd00f3,
+    #dd00f3,
+    #ff2400,
+    #e81d1d,
+    #e8b71d,
+    #e3e81d,
+    #1de840,
+    #1ddde8,
+    #2b1de8,
+    #dd00f3
+  );
+  background-size: 400%;
+  animation: glowingBorder 20s linear infinite;
+  filter: blur(4px);
+}
+
+#loadstring-container {
+  overflow: hidden;
+  max-height: 0;
+  transition: all 0.7s ease-in-out;
+  width: 100%;
+  background-color: #2d2d2d;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 10;
+}
+
+@keyframes glowingBorder {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 400% 0;
+  }
+}
+
 </style>
 
 
@@ -71,23 +129,37 @@
 </head>
 <body class="bg-gray-950 text-white font-sans">
 
-    <!-- Landing Page -->
+  <!-- Landing Page -->
 <section class="h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-gray-900 to-gray-950 relative overflow-hidden">
     <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z-0">
         <source src="site/asset/13138099_1920_1080_30fps.mp4" type="video/mp4">
     </video>
+    
     <h1 class="text-5xl md:text-7xl font-extrabold glow-text drop-shadow-lg relative z-10" data-text="Parallax Engine">
         Parallax Engine
     </h1>
-    <p class="mt-6 text-xl md:text-2xl text-gray-300 absolute">Intelligence Speed Infinity</p>
-    <div class="mt-20 flex gap-6 relative z-10">
-        <a href="#" class="hover:glow-text text-white px-6 py-3 rounded-2xl text-lg font-semibold transition glow-border-button transform transition-transform duration-300 hover:scale-105">loadstring</a>
-        <a href="#features" class="border border-indigo-500 glow-text px-6 py-3 rounded-2xl text-lg font-semibold transition transform transition-transform duration-300 hover:scale-105">See Features</a>
+    <p class="mt-6 text-xl md:text-2xl relative">Intelligence Speed Infinity</p>
 
+    <!-- Buttons -->
+    <div class="mt-10 flex gap-6 relative z-10">
+        <a href="#" id="loadstring-button" class="hover:glow-text text-white px-6 py-3 rounded-2xl text-lg font-semibold transition glow-border-button transform transition-transform duration-300 hover:scale-105">loadstring</a>
+        <a href="#features" class="border border-indigo-500 glow-text px-6 py-3 rounded-2xl text-lg font-semibold transition transform transition-transform duration-300 hover:scale-105">See Features</a>
     </div>
+
+    <!-- Loadstring Reveal Container -->
+    <div id="loadstring-container-glow-wrapper">
+  <div id="loadstring-container-glow">
+    <div id="loadstring-container" class="transition-all duration-700 ease-in-out">
+      <pre class="text-sm text-green-400 break-words" id="loadstring-code">loadstring(game:HttpGet("https://raw.githubusercontent.com/FoxVFoxyF/parallax-engine/refs/heads/main/main.lua", true))()</pre>
+      <button onclick="copyLoadstring()" class="mt-4 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white text-sm transition">Copy to Clipboard</button>
+    </div>
+  </div>
+</div>
+
 
     <div class="absolute bottom-0 w-full h-40 bg-gradient-to-b from-transparent to-black z-10"></div>
 </section>
+
 
 <!-- about script -->
 
@@ -207,7 +279,7 @@
             otherContent.style.transform = "translateY(-10px)";
             setTimeout(() => {
               other.removeAttribute("open");
-            }, 600); // Czekamy aż transition się skończy
+            }, 600);
           }
         });
 
@@ -217,11 +289,36 @@
         content.style.transform = "translateY(-10px)";
         setTimeout(() => {
           detail.removeAttribute("open");
-        }, 600); // Czekamy aż transition się skończy
+        }, 600);
       }
     });
   });
 </script>
+<script>
+const loadstringButton = document.getElementById('loadstring-button');
+const loadstringContainer = document.getElementById('loadstring-container');
+
+loadstringButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (loadstringContainer.style.maxHeight && loadstringContainer.style.maxHeight !== "0px") {
+        loadstringContainer.style.maxHeight = "0px";
+    } else {
+        loadstringContainer.style.maxHeight = loadstringContainer.scrollHeight + "px";
+    }
+});
+
+function copyLoadstring() {
+    const code = document.getElementById('loadstring-code').innerText;
+    navigator.clipboard.writeText(code)
+        .then(() => {
+            alert('Loadstring copied to clipboard!');
+        })
+        .catch((err) => {
+            console.error('Failed to copy: ', err);
+        });
+}
+</script>
+
 
 
 </section>
