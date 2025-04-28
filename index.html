@@ -141,27 +141,92 @@
 
 
 
-<!-- FAQ -->
 <section id="faq" class="py-20 px-6 md:px-20 relative overflow-hidden">
-    <div class="absolute inset-0 bg-black opacity-10 z-1"></div>
-    <div class="relative z-10">
-        <h2 class="text-4xl font-bold text-center mb-12 glow-text">FAQ</h2>
-        <div class="space-y-6 max-w-3xl mx-auto">
-            <details class="p-4 bg-[#080808] bg-opacity-80 rounded-2xl">
-                <summary class="cursor-pointer text-lg font-semibold">Will the parallax engine be always free?</summary>
-                <p class="mt-2 text-gray-300">I don't know, I don't plan on making money from it at the moment</p>
-            </details>
-            <details class="p-4 bg-[#080808] bg-opacity-80 rounded-2xl">
-                <summary class="cursor-pointer text-lg font-semibold">Are there any new features coming in the future?</summary>
-                <p class="mt-2 text-gray-300">Feel free to write suggestions, I'm out of ideas</p>
-            </details>
-            <details class="p-4 bg-[#080808] bg-opacity-80 rounded-2xl">
-                <summary class="cursor-pointer text-lg font-semibold">When will you give a tutorial on AI voice(text to speech)?</summary>
-                <p class="mt-2 text-gray-300">I will do it once I understand the requirement</p>
-            </details>
+  <style>
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: all 0.6s ease-in-out;
+      padding: 0 1rem;
+    }
+    </style>
+
+
+  <div class="absolute inset-0 bg-black opacity-10 z-0"></div>
+  <div class="relative z-10">
+    <h2 class="text-4xl font-bold text-center mb-12 glow-text">FAQ</h2>
+
+    <div class="space-y-6 max-w-3xl mx-auto text-center">
+      <details class="faq-item text-2xl" id="faq1">
+        <summary class="faq-summary">Will the parallax engine be always free?</summary>
+        <div class="faq-content text-gray-300">
+          <p class="text-1xl">I don't know, I don't plan on making money from it at the moment</p>
         </div>
+      </details>
+
+      <details class="faq-item text-2xl" id="faq2">
+        <summary class="faq-summary">Are there any new features coming in the future?</summary>
+        <div class="faq-content text-gray-300">
+          <p class="text-1xl">Feel free to write suggestions, I'm out of ideas</p>
+        </div>
+      </details>
+
+      <details class="faq-item text-2xl" id="faq3">
+        <summary class="faq-summary">When will you give a tutorial on AI voice (text to speech)?</summary>
+        <div class="faq-content text-gray-300">
+          <p class="text-1xl">I will do it once I understand the requirement</p>
+        </div>
+      </details>
     </div>
+  </div>
+  <script>
+  const details = document.querySelectorAll("details");
+
+  details.forEach((detail) => {
+    const summary = detail.querySelector("summary");
+    const content = detail.querySelector(".faq-content");
+
+    summary.addEventListener("click", function (e) {
+      e.preventDefault();
+      
+      if (!detail.open) {
+        detail.setAttribute("open", "true");
+        requestAnimationFrame(() => {
+          content.style.maxHeight = content.scrollHeight + "px";
+          content.style.opacity = "1";
+          content.style.transform = "translateY(0)";
+        });
+
+        details.forEach((other) => {
+          if (other !== detail && other.open) {
+            const otherContent = other.querySelector(".faq-content");
+            otherContent.style.maxHeight = "0px";
+            otherContent.style.opacity = "0";
+            otherContent.style.transform = "translateY(-10px)";
+            setTimeout(() => {
+              other.removeAttribute("open");
+            }, 600); // Czekamy aż transition się skończy
+          }
+        });
+
+      } else {
+        content.style.maxHeight = "0px";
+        content.style.opacity = "0";
+        content.style.transform = "translateY(-10px)";
+        setTimeout(() => {
+          detail.removeAttribute("open");
+        }, 600); // Czekamy aż transition się skończy
+      }
+    });
+  });
+</script>
+
+
 </section>
+
+
 
 
 <!-- footer -->
