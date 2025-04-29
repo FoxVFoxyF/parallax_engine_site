@@ -71,6 +71,7 @@
 }
 
 #loadstring-container-glow {
+  transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out;
   position: relative;
   width: 100%;
   max-width: 640px;
@@ -141,20 +142,25 @@
     <p class="mt-6 text-xl md:text-2xl relative">Intelligence Speed Infinity</p>
 
     <!-- Buttons -->
-    <div class="mt-10 flex gap-6 relative z-10">
-        <a href="#" id="loadstring-button" class="hover:glow-text text-white px-6 py-3 rounded-2xl text-lg font-semibold transition glow-border-button transform transition-transform duration-300 hover:scale-105">loadstring</a>
+    <div class="mt-6 flex gap-6 relative z-10">
+        <button onclick="toggleLoadstringContainer()" id="loadstring-button" class="hover:glow-text text-white px-6 py-3 rounded-2xl text-lg font-semibold transition glow-border-button transform transition-transform duration-300 hover:scale-105">loadstring</button>
         <a href="#features" class="border border-indigo-500 glow-text px-6 py-3 rounded-2xl text-lg font-semibold transition transform transition-transform duration-300 hover:scale-105">See Features</a>
     </div>
 
     <!-- Loadstring Reveal Container -->
     <div id="loadstring-container-glow-wrapper">
-  <div id="loadstring-container-glow">
-    <div id="loadstring-container" class="transition-all duration-700 ease-in-out">
-      <pre class="text-sm text-green-400 break-words" id="loadstring-code">loadstring(game:HttpGet("https://raw.githubusercontent.com/FoxVFoxyF/parallax-engine/refs/heads/main/main.lua", true))()</pre>
-      <button onclick="copyLoadstring()" class="mt-4 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white text-sm transition">Copy to Clipboard</button>
+  <div id="loadstring-container-glow" style="max-height: 0; overflow: hidden; opacity: 0;" class="absolute">
+    <div id="loadstring-container" class="transition-all duration-700 ease-in-out text-center" class="relative z-10">
+      <pre class="text-sm text-green-400 break-words inline-block whitespace-pre-line" id="loadstring-code">
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/FoxVFoxyF/parallax-engine/refs/heads/main/main.lua", true))()
+      </pre>
+      <button onclick="copyLoadstring()" class="mt-4 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 rounded-lg text-white text-sm transition">
+        Copy to Clipboard
+      </button>
     </div>
   </div>
 </div>
+
 
 
     <div class="absolute bottom-0 w-full h-40 bg-gradient-to-b from-transparent to-black z-10"></div>
@@ -317,6 +323,34 @@ function copyLoadstring() {
             console.error('Failed to copy: ', err);
         });
 }
+
+let isOpen = false;
+
+function toggleLoadstringContainer() {
+  const container = document.getElementById('loadstring-container-glow');
+
+  if (isOpen) {
+    container.style.maxHeight = container.scrollHeight + "px";
+    container.offsetHeight;
+    container.style.maxHeight = "0px";
+    container.style.opacity = "0";
+
+    setTimeout(() => {
+      container.style.overflow = "hidden";
+    }, 700);
+
+    console.log("closed");
+  } else {
+    container.style.overflow = "visible";
+    container.style.maxHeight = "none";
+    container.style.opacity = "1";
+
+    console.log("opened");
+  }
+
+  isOpen = !isOpen;
+}
+
 </script>
 
 
