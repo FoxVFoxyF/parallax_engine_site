@@ -137,7 +137,7 @@
       <!-- Buttons -->
       <div class="mt-6 flex gap-6 relative z-10">
         <button onclick="toggleLoadstringContainer()" id="loadstring-button" class="hover:glow-text text-white px-6 py-3 rounded-2xl text-lg font-semibold transition glow-border-button transform transition-transform duration-300 hover:scale-105">loadstring</button>
-        <a href="#features" class="border border-indigo-500 glow-text px-6 py-3 rounded-2xl text-lg font-semibold transition transform transition-transform duration-300 hover:scale-105">See Features</a>
+        <a href="#features" class="border border-indigo-500 glow-text px-6 py-3 rounded-2xl text-lg font-semibold transition transition-transform duration-300 hover:scale-105">See Features</a>
       </div>
       <!-- Loadstring Reveal Container -->
       <div id="loadstring-container-glow-wrapper" class="opacity-70">
@@ -155,11 +155,14 @@
         </div>
       </div>
 
-<div class="z-10 transform transition-transform duration-300 hover:scale-115">
+<div id="discord-section" class="z-10 transform transition-transform duration-300 hover:scale-110 text-center w-full" style="opacity: 0; pointer-events: none; transition: opacity 0.6s ease;">
   <a href="https://discord.gg/rz7y9zutbu" target="_blank">
-    <img src="site/asset/discord-logo.png" alt="Join us on Discord!" style="width: 100px; cursor: pointer;" />
+    <img src="site/asset/discord-logo.png" alt="Join us on Discord!" style="width: 100px; cursor: pointer;" class="mx-auto" />
   </a>
+  <p class="text-white text-lg font-semibold mt-2 glow-text">Join Discord for setup!</p>
 </div>
+
+
 
 
 
@@ -323,31 +326,41 @@
           }
           
           let isOpen = false;
-          
+                  
           function toggleLoadstringContainer() {
             const container = document.getElementById('loadstring-container-glow');
+            const discord = document.getElementById('discord-section');
           
             if (isOpen) {
               container.style.maxHeight = container.scrollHeight + "px";
               container.offsetHeight;
               container.style.maxHeight = "0px";
               container.style.opacity = "0";
-          
+            
+              // Hide Discord again uwu~
+              discord.style.opacity = "0";
+              discord.style.pointerEvents = "none";
+            
               setTimeout(() => {
                 container.style.overflow = "hidden";
               }, 700);
-          
+            
               console.log("closed");
             } else {
               container.style.overflow = "visible";
               container.style.maxHeight = "none";
               container.style.opacity = "1";
-          
+            
+              // Show Discord! uwu yayy~ 💞
+              discord.style.opacity = "1";
+              discord.style.pointerEvents = "auto";
+            
               console.log("opened");
             }
           
             isOpen = !isOpen;
           }
+
           
         </script>
       </section>
