@@ -178,7 +178,7 @@
         <div class="absolute inset-0 bg-gradient-to-b from-black/90 to-transparent z-10"></div>
         <div class="relative z-10 flex-1">
           <h2 class="text-4xl font-bold text-white mb-6 glow-text">What is Parallax Engine?</h2>
-          <p class="text-gray-300 leading-relaxed text-lg">Parallax Engine is a free AI script based on lua-u, designed to provide interactive AI that performs complex actions like dancing, jumping multiple times, and moving like a player</p>
+          <p class="text-gray-300 leading-relaxed text-lg">Parallax Engine is a free AI script designed to provide interactive AI that performs complex actions like dancing, jumping multiple times, and moving like a player inside any roblox game</p>
         </div>
         <!-- here -->
       </section>
@@ -191,19 +191,15 @@
             <!-- Card -->
             <div class="p-6 bg-[#080808]/50 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
               <h3 class="text-2xl font-semibold mb-4">Complex Action Handling</h3>
-              <p class="text-gray-300">Perform complex actions like dancing, jumping multiple times, and walking to specified locations.</p>
+              <p class="text-gray-300">Perform complex actions like dancing, jumping multiple times, and walking to specified locations</p>
             </div>
             <div class="p-6 bg-[#080808]/50 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
               <h3 class="text-2xl font-semibold mb-4">Player-Like Movement</h3>
-              <p class="text-gray-300">AI movement mimics that of a regular player, providing seamless interaction and behavior.</p>
+              <p class="text-gray-300">AI movement mimics that of a regular player, providing seamless interaction and behavior</p>
             </div>
             <div class="p-6 bg-[#080808]/50 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
-              <h3 class="text-2xl font-semibold mb-4">Intelligent Following</h3>
-              <p class="text-gray-300">AI can intelligently decide whether to follow another player or not, adding strategic depth.</p>
-            </div>
-            <div class="p-6 bg-[#080808]/50 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
-              <h3 class="text-2xl font-semibold mb-4">Free AI Service</h3>
-              <p class="text-gray-300">Completely free AI service with no charges involved, offering powerful functionality at zero cost.</p>
+              <h3 class="text-2xl font-semibold mb-4">Backend communication</h3>
+              <p class="text-gray-300">AI can decide whether to follow another player trough backend</p>
             </div>
           </div>
         </div>
@@ -236,9 +232,9 @@
               </div>
             </details>
             <details class="faq-item text-2xl" id="faq3">
-              <summary class="faq-summary">When will you give a tutorial on AI voice (text to speech)?</summary>
+              <summary class="faq-summary">PC only?</summary>
               <div class="faq-content text-gray-300">
-                <p class="text-1xl">I will do it once I understand the requirement</p>
+                <p class="text-1xl">Yeah, and its not gonna change</p>
               </div>
             </details>
           </div>
@@ -326,7 +322,7 @@
           }
           
           let isOpen = false;
-                  
+
           function toggleLoadstringContainer() {
             const container = document.getElementById('loadstring-container-glow');
             const discord = document.getElementById('discord-section');
@@ -336,8 +332,7 @@
               container.offsetHeight;
               container.style.maxHeight = "0px";
               container.style.opacity = "0";
-            
-              // Hide Discord again uwu~
+      
               discord.style.opacity = "0";
               discord.style.pointerEvents = "none";
             
@@ -351,7 +346,6 @@
               container.style.maxHeight = "none";
               container.style.opacity = "1";
             
-              // Show Discord! uwu yayy~ 💞
               discord.style.opacity = "1";
               discord.style.pointerEvents = "auto";
             
