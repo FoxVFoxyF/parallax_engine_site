@@ -23,22 +23,7 @@
         position: relative;
         transition: filter 0.3s ease, opacity 0.3s ease;
       }
-      .glow-text::after {
-        content: attr(data-text);
-        position: absolute;
-        top: 0; left: 0;
-        z-index: -1;
-        filter: blur(8px);
-        opacity: 0.35;
-        background: linear-gradient(90deg, #7c3fa8, #9d7ec7, #6b82b8, #9d7ec7, #7c3fa8);
-        background-size: 300% 300%;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: glowingCustom 9s linear infinite;
-        transition: filter 0.3s ease, opacity 0.3s ease;
-      }
       .glow-text:hover { filter: drop-shadow(0 0 8px rgba(157,126,199,0.5)) drop-shadow(0 0 16px rgba(124,63,168,0.35)); }
-      .glow-text:hover::after { filter: blur(11px); opacity: 0.55; }
       .glow-border-button {
         position: relative;
         display: inline-block;
@@ -88,7 +73,8 @@
           #2a2a3a, #3b1f5e);
         background-size: 400%;
         animation: glowingBorder 14s linear infinite;
-        filter: none;
+        box-shadow: 0 0 18px 2px rgba(109,63,166,0.25), 0 0 40px 4px rgba(60,20,90,0.15);
+        isolation: isolate;
       }
       #loadstring-container {
         width: 100%;
@@ -96,17 +82,7 @@
         border-radius: calc(1rem - 2px);
         padding: 1.5rem;
         position: relative;
-        z-index: 10;
-      }
-      #loadstring-container-glow::before {
-        content: "";
-        position: absolute;
-        top: -4px; left: -4px;
-        width: 100%; height: 100%;
-        background: inherit;
-        filter: blur(6px);
-        opacity: 0.5;
-        z-index: -1;
+        z-index: 1;
       }
       .kanji-layer {
         position: fixed;
@@ -229,7 +205,7 @@
       <div id="loadstring-container-glow-wrapper" class="opacity-80">
         <div id="loadstring-container-glow" style="max-height:0;overflow:hidden;opacity:0;">
           <div id="loadstring-container" class="text-center opacity-100">
-            <pre class="text-sm whitespace-pre text-left font-mono overflow-x-auto opacity-100" id="loadstring-code" style="color:rgba(255,255,255,0.55);"><code><span style="color:rgba(168,85,247,0.75);">loadstring</span>(<span style="color:rgba(255,255,255,0.4);">game</span>:<span style="color:rgba(168,85,247,0.5);">HttpGet</span>(<span style="color:rgba(255,255,255,0.3);">"https://raw.githubusercontent.com/FoxVFoxyF/parallax-engine/refs/heads/main/main.lua"</span>, <span style="color:rgba(168,85,247,0.5);">true</span>))()</code></pre>
+            <pre class="text-sm whitespace-pre text-left font-mono overflow-x-auto opacity-100 h-[30px]" id="loadstring-code" style="color:rgba(255,255,255,0.55);"><code><span style="color:rgba(168,85,247,0.75);">loadstring</span>(<span style="color:rgba(255,255,255,0.4);">game</span>:<span style="color:rgba(168,85,247,0.5);">HttpGet</span>(<span style="color:rgba(255,255,255,0.3);">"https://raw.githubusercontent.com/FoxVFoxyF/parallax-engine/refs/heads/main/main.lua"</span>, <span style="color:rgba(168,85,247,0.5);">true</span>))()</code></pre>
             <button onclick="copyLoadstring()" id="copy_button" class="mt-4 px-4 py-2 rounded-lg text-white/40 text-sm border border-white/10 hover:border-white/30 hover:text-white transition-all duration-300 hover:scale-105">
               Copy to Clipboard
             </button>
