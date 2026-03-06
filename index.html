@@ -216,6 +216,7 @@
 
     <!-- HERO -->
     <section class="min-h-screen flex flex-col justify-center items-center text-center relative z-10 px-4">
+      <div id="hero-text-wrap">
       <h1 class="text-5xl md:text-7xl font-extrabold glow-text drop-shadow-lg" data-text="Parallax Engine" style="letter-spacing:0.04em;">
         Parallax Engine
       </h1>
@@ -230,6 +231,7 @@
         <a href="#features" class="border border-white/10 text-white/50 hover:text-white hover:border-white/25 px-6 py-3 rounded-2xl text-base font-light tracking-widest transition-all duration-300 hover:scale-105">
           See Features
         </a>
+      </div>
       </div>
 
       <div id="loadstring-container-glow-wrapper" class="opacity-80">
@@ -408,8 +410,13 @@
       /* Toggle loadstring */
       let isOpen=false;
       function toggleLoadstringContainer(){
-        const c=document.getElementById('loadstring-container-glow');
-        const d=document.getElementById('discord-section');
+        const c    = document.getElementById('loadstring-container-glow');
+        const d    = document.getElementById('discord-section');
+        const hero = document.getElementById('hero-text-wrap');
+
+        // FLIP – First: snapshot current position
+        const firstY = hero.getBoundingClientRect().top;
+
         if(isOpen){
           c.style.maxHeight=c.scrollHeight+'px'; c.offsetHeight;
           c.style.maxHeight='0px'; c.style.opacity='0';
@@ -420,6 +427,17 @@
           d.style.opacity='1'; d.style.pointerEvents='auto';
         }
         isOpen=!isOpen;
+
+        // FLIP – Last → Invert → Play
+        const lastY = hero.getBoundingClientRect().top;
+        const delta = firstY - lastY;
+        if(Math.abs(delta) > 0.5){
+          hero.style.transition = 'none';
+          hero.style.transform  = `translateY(${delta}px)`;
+          hero.offsetHeight; // force reflow
+          hero.style.transition = 'transform 0.7s cubic-bezier(0.22,1,0.36,1)';
+          hero.style.transform  = 'translateY(0)';
+        }
       }
 
       /* Smooth tilt on hover for loadstring-container-glow */
