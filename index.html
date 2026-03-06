@@ -91,6 +91,8 @@
       }
       #loadstring-container-glow {
         transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out;
+        transform-style: preserve-3d;
+        will-change: transform;
         position: relative;
         width: 100%;
         max-width: 640px;
@@ -419,6 +421,52 @@
         }
         isOpen=!isOpen;
       }
+
+      /* Smooth tilt on hover for loadstring-container-glow */
+      (function(){
+        const el      = document.getElementById('loadstring-container-glow');
+        const wrapper = document.getElementById('loadstring-container-glow-wrapper');
+        if (!el || !wrapper) return;
+        const MAX_TILT = 6;
+        const LERP     = 0.08; // smoothness: lower = smoother/slower
+        let targetX = 0, targetY = 0;
+        let currentX = 0, currentY = 0;
+        let hovering = false;
+        let rafId = null;
+
+        function animate() {
+          currentX += (targetX - currentX) * LERP;
+          currentY += (targetY - currentY) * LERP;
+          el.style.transform = `perspective(700px) rotateX(${currentX.toFixed(3)}deg) rotateY(${currentY.toFixed(3)}deg) scale(${hovering ? 1.012 : 1})`;
+          const stillMoving = Math.abs(targetX - currentX) > 0.01 || Math.abs(targetY - currentY) > 0.01;
+          if (stillMoving || hovering) {
+            rafId = requestAnimationFrame(animate);
+          } else {
+            rafId = null;
+          }
+        }
+
+        function startLoop() {
+          if (!rafId) rafId = requestAnimationFrame(animate);
+        }
+
+        el.addEventListener('mousemove', (e) => {
+          hovering = true;
+          const rect = el.getBoundingClientRect();
+          const x =  (e.clientX - rect.left) / rect.width  - 0.5;
+          const y =  (e.clientY - rect.top)  / rect.height - 0.5;
+          targetX = -y * MAX_TILT;
+          targetY =  x * MAX_TILT;
+          startLoop();
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+          hovering = false;
+          targetX = 0;
+          targetY = 0;
+          startLoop();
+        });
+      })();
 
       /* Copy */
       let is_copied=false,copied_time=0;
