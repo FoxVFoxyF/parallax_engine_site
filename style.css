@@ -1,4 +1,32 @@
 * {
     scrollbar-width: thin;
-    scrollbar-color: #3F3F46 #18181b;
+    scrollbar-color: #2a2a2a #000;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #000;
+}
+
+::selection {
+    background: rgba(168, 85, 247, 0.25);
+    color: #fff;
+}
+
+/* Subtle horizontal rule styled sections */
+.section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+}
+
+/* Remove default focus outlines in favour of subtle glow */
+button:focus-visible,
+a:focus-visible {
+    outline: 1px solid rgba(168, 85, 247, 0.5);
+    outline-offset: 3px;
+    border-radius: 4px;
 }

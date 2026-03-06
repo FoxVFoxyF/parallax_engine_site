@@ -1,370 +1,434 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam&family=Noto+Sans+JP:wght@100;300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="site/asset/logo.ico" type="image/x-icon">
+    <title>Parallax | Advanced AI Engine</title>
+
     <style type="text/tailwindcss">
       @keyframes glowingCustom {
-      0% { background-position: 0 0; }
-      100% { background-position: 400% 0; }
+        0%   { background-position: 0 0; }
+        100% { background-position: 400% 0; }
       }
       .glow-text {
-      background: linear-gradient(90deg, #a855f7, #22d3ee, #4ade80, #a855f7);
-      background-size: 300% 300%;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: glowingCustom 6s linear infinite;
-      position: relative;
-      transition: filter 0.3s ease, opacity 0.3s ease;
+        background: linear-gradient(90deg, #7c3fa8, #9d7ec7, #6b82b8, #9d7ec7, #7c3fa8);
+        background-size: 300% 300%;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: glowingCustom 9s linear infinite;
+        position: relative;
+        transition: filter 0.3s ease, opacity 0.3s ease;
       }
       .glow-text::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      filter: blur(8px);
-      opacity: 0.5;
-      background: linear-gradient(90deg, #a855f7, #22d3ee, #4ade80, #a855f7);
-      background-size: 300% 300%;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: glowingCustom 6s linear infinite;
-      transition: filter 0.3s ease, opacity 0.3s ease;
+        content: attr(data-text);
+        position: absolute;
+        top: 0; left: 0;
+        z-index: -1;
+        filter: blur(8px);
+        opacity: 0.35;
+        background: linear-gradient(90deg, #7c3fa8, #9d7ec7, #6b82b8, #9d7ec7, #7c3fa8);
+        background-size: 300% 300%;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: glowingCustom 9s linear infinite;
+        transition: filter 0.3s ease, opacity 0.3s ease;
       }
-      .glow-text:hover {
-      filter: drop-shadow(0 0 10px #22d3ee) drop-shadow(0 0 20px #a855f7);
-      }
-      .glow-text:hover::after {
-      filter: blur(12px);
-      opacity: 0.8;
-      }
+      .glow-text:hover { filter: drop-shadow(0 0 8px rgba(157,126,199,0.5)) drop-shadow(0 0 16px rgba(124,63,168,0.35)); }
+      .glow-text:hover::after { filter: blur(11px); opacity: 0.55; }
       .glow-border-button {
-      position: relative;
-      display: inline-block;
-      border-radius: 2rem;
-      background: linear-gradient(90deg, #a855f7, #22d3ee, #4ade80, #a855f7);
-      background-size: 400% 400%;
-      animation: glowingCustom 6s linear infinite;
-      text-decoration: none;
+        position: relative;
+        display: inline-block;
+        border-radius: 2rem;
+        background: linear-gradient(90deg, #3b1f5e, #6d45a0, #9d7ec7, #6d45a0, #3b1f5e);
+        background-size: 400% 400%;
+        animation: glowingCustom 10s linear infinite;
+        text-decoration: none;
+        padding: 1px;
       }
-      #loadstring-container-glow-wrapper {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      width: 100%;
-      margin-top: 1.5rem;
-      z-index: 10;
+      .glow-border-button-inner {
+        display: block;
+        padding: 0.6rem 1.5rem;
+        background: #0a0a0a;
+        border-radius: calc(2rem - 1px);
+        color: rgba(255,255,255,0.65);
+        font-weight: 400;
+        font-size: 0.95rem;
+        letter-spacing: 0.08em;
+        transition: background 0.3s, color 0.3s;
       }
-      #loadstring-container-glow {
-      transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out;
-      position: relative;
-      width: 100%;
-      max-width: 640px;
-      padding: 3px;
-      border-radius: 1rem;
-      background: linear-gradient(90deg,
-      #ff2400,
-      #e81d1d,
-      #e8b71d,
-      #e3e81d,
-      #1de840,
-      #1ddde8,
-      #2b1de8,
-      #dd00f3,
-      #dd00f3,
-      #ff2400,
-      #e81d1d,
-      #e8b71d,
-      #e3e81d,
-      #1de840,
-      #1ddde8,
-      #2b1de8,
-      #dd00f3
-      );
-      background-size: 400%;
-      animation: glowingBorder 20s linear infinite;
-      filter: blur(0.5px);
-      }
-      #loadstring-container {
-      overflow: hidden;
-      max-height: 0;
-      transition: all 0.7s ease-in-out;
-      width: 100%;
-      background-color: #2d2d2d;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      position: relative;
-      z-index: 10;
-      }
-      #loadstring-container-glow::before {
-      content: "";
-      position: absolute;
-      top: -5px;
-      left: -5px;
-      width: 100%;
-      height: 100%;
-      background: inherit;
-      filter: blur(4px);
-      z-index: -1;
+      .glow-border-button:hover .glow-border-button-inner {
+        background: rgba(62,28,90,0.45);
+        color: rgba(255,255,255,0.9);
       }
       @keyframes glowingBorder {
-      0% {
-      background-position: 0 0;
+        0%   { background-position: 0 0; }
+        100% { background-position: 400% 0; }
       }
-      100% {
-      background-position: 400% 0;
+      #loadstring-container-glow-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin-top: 1.5rem;
+        z-index: 10;
       }
+      #loadstring-container-glow {
+        transition: max-height 0.7s ease-in-out, opacity 0.7s ease-in-out;
+        position: relative;
+        width: 100%;
+        max-width: 640px;
+        padding: 2px;
+        border-radius: 1rem;
+        background: linear-gradient(90deg,
+          #3b1f5e, #4c2880, #6d3fa6, #4c2880, #3b1f5e,
+          #2a2a3a, #3b1f5e);
+        background-size: 400%;
+        animation: glowingBorder 14s linear infinite;
+        filter: none;
+      }
+      #loadstring-container {
+        width: 100%;
+        background-color: #080808;
+        border-radius: calc(1rem - 2px);
+        padding: 1.5rem;
+        position: relative;
+        z-index: 10;
+      }
+      #loadstring-container-glow::before {
+        content: "";
+        position: absolute;
+        top: -4px; left: -4px;
+        width: 100%; height: 100%;
+        background: inherit;
+        filter: blur(6px);
+        opacity: 0.5;
+        z-index: -1;
+      }
+      .kanji-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+        overflow: hidden;
+      }
+      .kanji-char {
+        position: absolute;
+        color: rgba(255,255,255,0.055);
+        font-family: 'Noto Sans JP', sans-serif;
+        font-weight: 100;
+        user-select: none;
+        animation: kanjiDrift linear infinite;
+        will-change: transform, opacity;
+        writing-mode: vertical-rl;
+        line-height: 1.1;
+      }
+      .kanji-boxed {
+        border: 1px solid rgba(255,255,255,0.07);
+        padding: 0.3rem 0.5rem;
+      }
+      @keyframes kanjiDrift {
+        0%   { transform: translateY(0px);  opacity: 0; }
+        8%   { opacity: 1; }
+        92%  { opacity: 0.7; }
+        100% { transform: translateY(-110vh); opacity: 0; }
+      }
+      .stars-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .star {
+        position: absolute;
+        background: #fff;
+        border-radius: 50%;
+        animation: twinkle ease-in-out infinite;
+      }
+      @keyframes twinkle {
+        0%,100% { opacity: 0.08; transform: scale(1); }
+        50%     { opacity: 0.85; transform: scale(1.5); }
+      }
+      .faq-content {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.6s ease-in-out;
+        padding: 0 0.25rem;
+      }
+      .faq-summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 1.1rem 0;
+        border-bottom: 1px solid rgba(255,255,255,0.07);
+        color: rgba(255,255,255,0.65);
+        transition: color 0.3s;
+        font-size: 0.95rem;
+        letter-spacing: 0.02em;
+      }
+      .faq-summary:hover { color: #fff; }
+      .faq-summary::-webkit-details-marker { display: none; }
+      .section-divider {
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07), transparent);
+      }
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.9s ease, transform 0.9s ease;
+      }
+      .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .feature-card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.055);
+        border-radius: 1rem;
+        transition: border-color 0.3s, background 0.3s, transform 0.3s;
+      }
+      .feature-card:hover {
+        border-color: rgba(168,85,247,0.3);
+        background: rgba(168,85,247,0.05);
+        transform: translateY(-5px);
+      }
+      #discord-section {
+        transition: opacity 0.6s ease;
       }
     </style>
-    <title>Parallax | Advanced AI Engine</title>
-    <link rel="stylesheet" href="style.css">
   </head>
-  <body class="bg-gray-950 text-white font-sans">
-    <!-- Landing Page -->
-    <section class="h-screen flex flex-col justify-center items-center text-center bg-gradient-to-br from-gray-900 to-gray-950 relative overflow-hidden">
-      <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z-0">
-        <source src="site/asset/13138099_1920_1080_30fps.mp4" type="video/mp4">
-      </video>
-      <h1 class="text-5xl md:text-7xl font-extrabold glow-text drop-shadow-lg relative z-10" data-text="Parallax Engine">
+
+  <body class="bg-black text-white font-sans" style="overflow-x:hidden;">
+
+    <div class="kanji-layer" id="kanji-layer"></div>
+    <div class="stars-layer" id="stars-layer"></div>
+
+    <!-- HERO -->
+    <section class="min-h-screen flex flex-col justify-center items-center text-center relative z-10 px-4">
+      <h1 class="text-5xl md:text-7xl font-extrabold glow-text drop-shadow-lg" data-text="Parallax Engine" style="letter-spacing:0.04em;">
         Parallax Engine
       </h1>
-      <p class="mt-6 text-xl md:text-2xl relative">Intelligence Speed Infinity</p>
-      <!-- Buttons -->
-      <div class="mt-6 flex gap-6 relative z-10">
-        <button onclick="toggleLoadstringContainer()" id="loadstring-button" class="hover:glow-text text-white px-6 py-3 rounded-2xl text-lg font-semibold transition glow-border-button transform transition-transform duration-300 hover:scale-105">loadstring</button>
-        <a href="#features" class="border border-indigo-500 glow-text px-6 py-3 rounded-2xl text-lg font-semibold transition transition-transform duration-300 hover:scale-105">See Features</a>
+      <p class="mt-5 text-sm md:text-base tracking-[0.38em] uppercase text-white/30 font-light">
+        Intelligence &nbsp;&middot;&nbsp; Speed &nbsp;&middot;&nbsp; Infinity
+      </p>
+
+      <div class="mt-10 flex flex-wrap justify-center gap-5 z-10">
+        <button onclick="toggleLoadstringContainer()" id="loadstring-button" class="glow-border-button transform transition-transform duration-300 hover:scale-105">
+          <span class="glow-border-button-inner">loadstring</span>
+        </button>
+        <a href="#features" class="border border-white/10 text-white/50 hover:text-white hover:border-white/25 px-6 py-3 rounded-2xl text-base font-light tracking-widest transition-all duration-300 hover:scale-105">
+          See Features
+        </a>
       </div>
-      <!-- Loadstring Reveal Container -->
-      <div id="loadstring-container-glow-wrapper" class="opacity-70">
-        <div id="loadstring-container-glow" style="max-height: 0; overflow: hidden; opacity: 0;">
-          <div id="loadstring-container" class="transition-all duration-700 ease-in-out text-center opacity-100">
-            <pre class="text-sm whitespace-pre text-left font-mono overflow-x-auto text-2xl font-bold opacity-100" id="loadstring-code">
-  <code>
-    <span class="text-purple-400">loadstring</span>(<span class="text-yellow-300">game</span>:<span class="text-blue-400">HttpGet</span>(<span class="text-green-400">"https://raw.githubusercontent.com/FoxVFoxyF/parallax-engine/refs/heads/main/main.lua"</span>, <span class="text-pink-400">true</span>))()
-  </code>
-</pre>
-            <button onclick="copyLoadstring()" id="copy_button" class="mt-4 px-4 py-2 bg-indigo-500/0 hover:bg-gradient-to-r hover:from-indigo-500 hover:to-purple-500 rounded-lg text-white text-sm transition hover:shadow-lg hover:scale-105 duration-300">
-            Copy to Clipboard
+
+      <div id="loadstring-container-glow-wrapper" class="opacity-80">
+        <div id="loadstring-container-glow" style="max-height:0;overflow:hidden;opacity:0;">
+          <div id="loadstring-container" class="text-center opacity-100">
+            <pre class="text-sm whitespace-pre text-left font-mono overflow-x-auto opacity-100" id="loadstring-code" style="color:rgba(255,255,255,0.55);"><code><span style="color:rgba(168,85,247,0.75);">loadstring</span>(<span style="color:rgba(255,255,255,0.4);">game</span>:<span style="color:rgba(168,85,247,0.5);">HttpGet</span>(<span style="color:rgba(255,255,255,0.3);">"https://raw.githubusercontent.com/FoxVFoxyF/parallax-engine/refs/heads/main/main.lua"</span>, <span style="color:rgba(168,85,247,0.5);">true</span>))()</code></pre>
+            <button onclick="copyLoadstring()" id="copy_button" class="mt-4 px-4 py-2 rounded-lg text-white/40 text-sm border border-white/10 hover:border-white/30 hover:text-white transition-all duration-300 hover:scale-105">
+              Copy to Clipboard
             </button>
           </div>
         </div>
       </div>
 
-<div id="discord-section" class="z-10 transform transition-transform duration-300 hover:scale-110 text-center w-full" style="opacity: 0; pointer-events: none; transition: opacity 0.6s ease;">
-  <a href="https://discord.gg/rz7y9zutbu" target="_blank">
-    <img src="site/asset/discord-logo.png" alt="Join us on Discord!" style="width: 100px; cursor: pointer;" class="mx-auto" />
-  </a>
-  <p class="text-white text-lg font-semibold mt-2 glow-text">Join Discord for setup!</p>
-</div>
+      <div id="discord-section" class="z-10 mt-6 text-center" style="opacity:0;pointer-events:none;">
+        <a href="https://discord.gg/rz7y9zutbu" target="_blank" class="transform transition-transform duration-300 hover:scale-110 inline-block">
+          <img src="site/asset/discord-logo.png" alt="Discord" style="width:52px;" class="mx-auto opacity-60 hover:opacity-100 transition-opacity duration-300" />
+        </a>
+        <p class="text-white/25 text-xs tracking-[0.35em] uppercase mt-2">Join Discord for setup</p>
+      </div>
 
-
-
-
-
-
-      <div class="absolute bottom-0 w-full h-40 bg-gradient-to-b from-transparent to-black z-10"></div>
+      <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-25 pointer-events-none">
+        <span class="text-xs tracking-[0.4em] uppercase">scroll</span>
+        <div style="width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.6),transparent);"></div>
+      </div>
     </section>
-    <!-- about script -->
-    <div class="relative overflow-hidden">
-      <video autoplay muted loop class="absolute inset-0 w-full h-full object-cover z- opacity-40 filter blur-[5px] ">
-        <source src="site/asset/13138099_1920_1080_30fps.mp4" type="video/mp4">
-      </video>
-      <section id="about" class="py-20 px-6 md:px-20 flex flex-col md:flex-row items-center gap-10 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-black/90 to-transparent z-10"></div>
-        <div class="relative z-10 flex-1">
-          <h2 class="text-4xl font-bold text-white mb-6 glow-text">What is Parallax Engine?</h2>
-          <p class="text-gray-300 leading-relaxed text-lg">Parallax Engine is a free AI script designed to provide interactive AI that performs complex actions like dancing, jumping multiple times, and moving like a player inside any roblox game</p>
+
+    <div class="section-divider"></div>
+
+    <!-- ABOUT -->
+    <section id="about" class="py-28 px-6 md:px-20 max-w-4xl mx-auto relative z-10 fade-in">
+      <h2 class="text-3xl font-bold mb-4 glow-text inline-block" data-text="What is Parallax Engine?">What is Parallax Engine?</h2>
+      <p class="text-white/35 leading-relaxed text-base font-light mt-5">
+        Parallax Engine is a free AI script designed to provide interactive AI that performs
+        complex actions like dancing, jumping multiple times, and moving like a player inside
+        any Roblox game.
+      </p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- FEATURES -->
+    <section id="features" class="py-28 px-6 md:px-20 relative z-10">
+      <h2 class="text-3xl font-bold text-center mb-16 glow-text inline-block w-full" data-text="Functions">Functions</h2>
+      <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div class="feature-card p-7 fade-in">
+          <div class="mb-4 text-white/15 text-2xl select-none font-light">01</div>
+          <h3 class="text-base font-semibold mb-3 text-white/85">Complex Action Handling</h3>
+          <p class="text-white/30 text-sm leading-relaxed font-light">Perform complex actions like dancing, jumping multiple times, and walking to specified locations.</p>
         </div>
-        <!-- here -->
-      </section>
-      <!-- features -->
-      <section id="features" class="py-20 px-6 md:px-20 relative overflow-hidden">
-        <div class="absolute inset-0 bg-black opacity-10 z-1"></div>
-        <div class="relative z-10">
-          <h2 class="text-4xl font-bold text-center mb-12 glow-text">Functions</h2>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Card -->
-            <div class="p-6 bg-[#080808]/50 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
-              <h3 class="text-2xl font-semibold mb-4">Complex Action Handling</h3>
-              <p class="text-gray-300">Perform complex actions like dancing, jumping multiple times, and walking to specified locations</p>
-            </div>
-            <div class="p-6 bg-[#080808]/50 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
-              <h3 class="text-2xl font-semibold mb-4">Player-Like Movement</h3>
-              <p class="text-gray-300">AI movement mimics that of a regular player, providing seamless interaction and behavior</p>
-            </div>
-            <div class="p-6 bg-[#080808]/50 rounded-2xl shadow-md transform transition-transform duration-300 hover:scale-105">
-              <h3 class="text-2xl font-semibold mb-4">Backend communication</h3>
-              <p class="text-gray-300">AI can decide whether to follow another player trough backend</p>
-            </div>
-          </div>
+        <div class="feature-card p-7 fade-in" style="transition-delay:0.12s;">
+          <div class="mb-4 text-white/15 text-2xl select-none font-light">02</div>
+          <h3 class="text-base font-semibold mb-3 text-white/85">Player-Like Movement</h3>
+          <p class="text-white/30 text-sm leading-relaxed font-light">AI movement mimics that of a regular player, providing seamless interaction and behavior.</p>
         </div>
-      </section>
-      <section id="faq" class="py-20 px-6 md:px-20 relative overflow-hidden">
-        <style>
-          .faq-content {
-          max-height: 0;
-          overflow: hidden;
-          opacity: 0;
-          transform: translateY(-10px);
-          transition: all 0.6s ease-in-out;
-          padding: 0 1rem;
-          }
-        </style>
-        <div class="absolute inset-0 bg-black opacity-10 z-0"></div>
-        <div class="relative z-10">
-          <h2 class="text-4xl font-bold text-center mb-12 glow-text">FAQ</h2>
-          <div class="space-y-6 max-w-3xl mx-auto text-center">
-            <details class="faq-item text-2xl" id="faq1">
-              <summary class="faq-summary">Will the parallax engine be always free?</summary>
-              <div class="faq-content text-gray-300">
-                <p class="text-1xl">I don't know, I don't plan on making money from it at the moment</p>
-              </div>
-            </details>
-            <details class="faq-item text-2xl" id="faq2">
-              <summary class="faq-summary">Are there any new features coming in the future?</summary>
-              <div class="faq-content text-gray-300">
-                <p class="text-1xl">Feel free to write suggestions, I'm out of ideas</p>
-              </div>
-            </details>
-            <details class="faq-item text-2xl" id="faq3">
-              <summary class="faq-summary">PC only?</summary>
-              <div class="faq-content text-gray-300">
-                <p class="text-1xl">Yeah, and its not gonna change</p>
-              </div>
-            </details>
-          </div>
+        <div class="feature-card p-7 fade-in" style="transition-delay:0.24s;">
+          <div class="mb-4 text-white/15 text-2xl select-none font-light">03</div>
+          <h3 class="text-base font-semibold mb-3 text-white/85">Backend Communication</h3>
+          <p class="text-white/30 text-sm leading-relaxed font-light">AI can decide whether to follow another player through backend.</p>
         </div>
-        <script>
-          const details = document.querySelectorAll("details");
-          
-          details.forEach((detail) => {
-            const summary = detail.querySelector("summary");
-            const content = detail.querySelector(".faq-content");
-          
-            summary.addEventListener("click", function (e) {
-              e.preventDefault();
-              
-              if (!detail.open) {
-                detail.setAttribute("open", "true");
-                requestAnimationFrame(() => {
-                  content.style.maxHeight = content.scrollHeight + "px";
-                  content.style.opacity = "1";
-                  content.style.transform = "translateY(0)";
-                });
-          
-                details.forEach((other) => {
-                  if (other !== detail && other.open) {
-                    const otherContent = other.querySelector(".faq-content");
-                    otherContent.style.maxHeight = "0px";
-                    otherContent.style.opacity = "0";
-                    otherContent.style.transform = "translateY(-10px)";
-                    setTimeout(() => {
-                      other.removeAttribute("open");
-                    }, 600);
-                  }
-                });
-          
-              } else {
-                content.style.maxHeight = "0px";
-                content.style.opacity = "0";
-                content.style.transform = "translateY(-10px)";
-                setTimeout(() => {
-                  detail.removeAttribute("open");
-                }, 600);
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-28 px-6 md:px-20 relative z-10">
+      <h2 class="text-3xl font-bold text-center mb-16 glow-text inline-block w-full" data-text="FAQ">FAQ</h2>
+      <div class="space-y-1 max-w-2xl mx-auto fade-in">
+        <details id="faq1">
+          <summary class="faq-summary">Will Parallax Engine always be free?</summary>
+          <div class="faq-content text-white/30 text-sm py-3">I don't know, I don't plan on making money from it at the moment.</div>
+        </details>
+        <details id="faq2">
+          <summary class="faq-summary">Are there new features coming?</summary>
+          <div class="faq-content text-white/30 text-sm py-3">Feel free to write suggestions, I'm out of ideas.</div>
+        </details>
+        <details id="faq3">
+          <summary class="faq-summary">PC only?</summary>
+          <div class="faq-content text-white/30 text-sm py-3">Yeah, and it's not gonna change.</div>
+        </details>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- FOOTER -->
+    <footer class="py-16 text-center relative z-10">
+      <p class="text-white/15 text-xs tracking-[0.4em] uppercase">Made with pain by kjukju aka imsqu</p>
+    </footer>
+
+    <script>
+      /* Kanji layer */
+      (function(){
+        const chars=['愛','度','神','壁','完','撫','事','他','界','な','れ','い','そ','に','っ',
+          '闇','眠','夢','影','空','星','風','月','光','静','刻','無','魂','命','永',
+          '幻','涙','怒','喜','哀','楽','孤','独','深','渡','遠','近','明','暗','想',
+          'だ','た','一','二','三','四','五','六','七','八','九','十','百','千'];
+        const layer=document.getElementById('kanji-layer');
+        function spawn(){
+          const el=document.createElement('div');
+          const boxed=Math.random()<0.12;
+          el.className='kanji-char'+(boxed?' kanji-boxed':'');
+          const zone=Math.random();
+          let x;
+          if(zone<0.33)      x=Math.random()*12;
+          else if(zone<0.66) x=86+Math.random()*12;
+          else               x=14+Math.random()*70;
+          el.style.left=x+'vw';
+          el.style.bottom=(Math.random()*85)+'vh';
+          const fs=1.2+Math.random()*3.8;
+          el.style.fontSize=fs+'rem';
+          const dur=20+Math.random()*30;
+          el.style.animationDuration=dur+'s';
+          el.style.animationDelay=-(Math.random()*dur)+'s';
+          /* multi-char vertical stack */
+          const len=Math.floor(1+Math.random()*5);
+          let txt='';
+          for(let i=0;i<len;i++) txt+=chars[Math.floor(Math.random()*chars.length)];
+          el.textContent=txt;
+          layer.appendChild(el);
+          setTimeout(()=>el.remove(),(dur*2.5)*1000);
+        }
+        for(let i=0;i<65;i++) spawn();
+        setInterval(spawn,1600);
+      })();
+
+      /* Stars */
+      (function(){
+        const layer=document.getElementById('stars-layer');
+        for(let i=0;i<100;i++){
+          const s=document.createElement('div');
+          s.className='star';
+          const sz=0.8+Math.random()*2;
+          s.style.width=sz+'px'; s.style.height=sz+'px';
+          s.style.left=Math.random()*100+'vw';
+          s.style.top=Math.random()*100+'vh';
+          s.style.animationDuration=(2+Math.random()*6)+'s';
+          s.style.animationDelay=-(Math.random()*6)+'s';
+          layer.appendChild(s);
+        }
+      })();
+
+      /* Scroll fade-in */
+      const obs=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+      },{threshold:0.12});
+      document.querySelectorAll('.fade-in').forEach(el=>obs.observe(el));
+
+      /* FAQ */
+      document.querySelectorAll('details').forEach(detail=>{
+        const sum=detail.querySelector('summary');
+        const con=detail.querySelector('.faq-content');
+        sum.addEventListener('click',e=>{
+          e.preventDefault();
+          if(!detail.open){
+            detail.setAttribute('open','true');
+            requestAnimationFrame(()=>{
+              con.style.maxHeight=con.scrollHeight+'px';
+              con.style.opacity='1';
+              con.style.transform='translateY(0)';
+            });
+            document.querySelectorAll('details').forEach(other=>{
+              if(other!==detail&&other.open){
+                const oc=other.querySelector('.faq-content');
+                oc.style.maxHeight='0px'; oc.style.opacity='0'; oc.style.transform='translateY(-10px)';
+                setTimeout(()=>other.removeAttribute('open'),600);
               }
             });
-          });
-        </script>
-        <script>
-          const loadstringButton = document.getElementById('loadstring-button');
-          const loadstringContainer = document.getElementById('loadstring-container');
-          
-          loadstringButton.addEventListener('click', (e) => {
-              e.preventDefault();
-              if (loadstringContainer.style.maxHeight && loadstringContainer.style.maxHeight !== "0px") {
-                  loadstringContainer.style.maxHeight = "0px";
-              } else {
-                  loadstringContainer.style.maxHeight = loadstringContainer.scrollHeight + "px";
-              }
-          });
-          
-          let is_copied = false;
-          let copied_time = 0;
-          
-          function copyLoadstring() {
-              const code = document.getElementById('loadstring-code').innerText;
-              const copy_button = document.getElementById('copy_button');
-          
-              if (!is_copied) {
-                  copy_button.innerText = 'Loadstring copied to clipboard!';
-              } else if (copied_time == 0) {
-                  copy_button.innerText = 'Loadstring copied ONCE AGAIN 😩';
-                  copied_time += 1;
-              } else if (copied_time == 1) {
-                  copy_button.innerText = "Again? maybe rizz this loadstring huh 😏";
-                  copied_time += 1;
-              } else if (copied_time == 2) {
-                  copy_button.innerText = "Keep going and something bad might happen 😈";
-                  copied_time += 1;
-              } else if (copied_time == 3) {
-                  copy_button.remove();
-              }
-          
-              navigator.clipboard.writeText(code);
-
-              is_copied = true;
-
+          } else {
+            con.style.maxHeight='0px'; con.style.opacity='0'; con.style.transform='translateY(-10px)';
+            setTimeout(()=>detail.removeAttribute('open'),600);
           }
-          
-          let isOpen = false;
+        });
+      });
 
-          function toggleLoadstringContainer() {
-            const container = document.getElementById('loadstring-container-glow');
-            const discord = document.getElementById('discord-section');
-          
-            if (isOpen) {
-              container.style.maxHeight = container.scrollHeight + "px";
-              container.offsetHeight;
-              container.style.maxHeight = "0px";
-              container.style.opacity = "0";
-      
-              discord.style.opacity = "0";
-              discord.style.pointerEvents = "none";
-            
-              setTimeout(() => {
-                container.style.overflow = "hidden";
-              }, 700);
-            
-              console.log("closed");
-            } else {
-              container.style.overflow = "visible";
-              container.style.maxHeight = "none";
-              container.style.opacity = "1";
-            
-              discord.style.opacity = "1";
-              discord.style.pointerEvents = "auto";
-            
-              console.log("opened");
-            }
-          
-            isOpen = !isOpen;
-          }
+      /* Toggle loadstring */
+      let isOpen=false;
+      function toggleLoadstringContainer(){
+        const c=document.getElementById('loadstring-container-glow');
+        const d=document.getElementById('discord-section');
+        if(isOpen){
+          c.style.maxHeight=c.scrollHeight+'px'; c.offsetHeight;
+          c.style.maxHeight='0px'; c.style.opacity='0';
+          d.style.opacity='0'; d.style.pointerEvents='none';
+          setTimeout(()=>{c.style.overflow='hidden';},700);
+        } else {
+          c.style.overflow='visible'; c.style.maxHeight='none'; c.style.opacity='1';
+          d.style.opacity='1'; d.style.pointerEvents='auto';
+        }
+        isOpen=!isOpen;
+      }
 
-          
-        </script>
-      </section>
-      <!-- footer -->
-      <footer class="py-8 text-center text-gray-400 text-sm relative overflow-hidden">
-        <div class="absolute inset-0 bg-black opacity-10 z-1"></div>
-        <div class="relative z-10">
-          Made with pain by kjukju aka imsqu
-        </div>
-      </footer>
-    </div>
+      /* Copy */
+      let is_copied=false,copied_time=0;
+      function copyLoadstring(){
+        const code=document.getElementById('loadstring-code').innerText;
+        const btn=document.getElementById('copy_button');
+        navigator.clipboard.writeText(code);
+        if(!is_copied){btn.textContent='Loadstring copied to clipboard!';}
+        else if(copied_time===0){btn.textContent='Loadstring copied ONCE AGAIN \uD83D\uDE29';copied_time++;}
+        else if(copied_time===1){btn.textContent='Again? maybe rizz this loadstring huh \uD83D\uDE0F';copied_time++;}
+        else if(copied_time===2){btn.textContent='Keep going and something bad might happen \uD83D\uDE08';copied_time++;}
+        else if(copied_time===3){btn.remove();}
+        is_copied=true;
+      }
+    </script>
   </body>
 </html>
