@@ -27,27 +27,55 @@
       .glow-border-button {
         position: relative;
         display: inline-block;
-        border-radius: 2rem;
-        background: linear-gradient(90deg, #3b1f5e, #6d45a0, #9d7ec7, #6d45a0, #3b1f5e);
-        background-size: 400% 400%;
-        animation: glowingCustom 10s linear infinite;
+        border-radius: 0.35rem;
+        background: transparent;
         text-decoration: none;
+        padding: 0;
+      }
+      .glow-border-button::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 0.35rem;
         padding: 1px;
+        background: linear-gradient(120deg, #4a2070, #8b5cf6, #4a2070, #6d28d9);
+        background-size: 300% 300%;
+        animation: glowingCustom 5s linear infinite;
+        -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+        pointer-events: none;
       }
       .glow-border-button-inner {
-        display: block;
-        padding: 0.6rem 1.5rem;
-        background: #0a0a0a;
-        border-radius: calc(2rem - 1px);
-        color: rgba(255,255,255,0.65);
-        font-weight: 400;
-        font-size: 0.95rem;
-        letter-spacing: 0.08em;
-        transition: background 0.3s, color 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.6rem 1.4rem;
+        background: rgba(10,4,20,0.92);
+        border-radius: 0.3rem;
+        color: rgba(180,140,255,0.85);
+        font-family: 'Courier New', monospace;
+        font-weight: 700;
+        font-size: 0.88rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        transition: background 0.25s, color 0.25s, box-shadow 0.25s;
+        box-shadow: inset 0 0 18px rgba(109,40,217,0.08);
+      }
+      .glow-border-button-inner::before {
+        content: '>';
+        color: rgba(139,92,246,0.6);
+        font-size: 0.8rem;
+        transition: color 0.25s, transform 0.25s;
       }
       .glow-border-button:hover .glow-border-button-inner {
-        background: rgba(62,28,90,0.45);
-        color: rgba(255,255,255,0.9);
+        background: rgba(74,32,112,0.45);
+        color: rgba(220,190,255,1);
+        box-shadow: inset 0 0 24px rgba(139,92,246,0.18), 0 0 20px rgba(109,40,217,0.25);
+      }
+      .glow-border-button:hover .glow-border-button-inner::before {
+        color: rgba(167,139,250,1);
+        transform: translateX(3px);
       }
       @keyframes glowingBorder {
         0%   { background-position: 0 0; }
