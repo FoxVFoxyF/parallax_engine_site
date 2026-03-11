@@ -212,6 +212,97 @@
         pointer-events: none;
         z-index: 0;
       }
+      /* ── Wiki page ── */
+      #wiki-content {
+        display: none;
+        min-height: 100vh;
+        position: relative;
+        z-index: 10;
+      }
+      .wiki-tgl {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 46px;
+        height: 26px;
+        background: rgba(255,255,255,0.07);
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.12);
+        cursor: pointer;
+        position: relative;
+        transition: background 0.3s, border-color 0.3s;
+        flex-shrink: 0;
+      }
+      .wiki-tgl::after {
+        content: '';
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: rgba(255,255,255,0.3);
+        border-radius: 50%;
+        top: 3px;
+        left: 3px;
+        transition: transform 0.3s, background 0.3s;
+      }
+      .wiki-tgl:checked { background: rgba(109,40,217,0.4); border-color: rgba(139,92,246,0.5); }
+      .wiki-tgl:checked::after { transform: translateX(20px); background: rgba(168,85,247,1); }
+      .guide-card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.065);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 1.75rem;
+        transition: border-color 0.3s;
+      }
+      .guide-card:hover { border-color: rgba(168,85,247,0.2); }
+      .guide-step {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        margin-bottom: 1.1rem;
+      }
+      .guide-num {
+        min-width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: rgba(109,40,217,0.15);
+        border: 1px solid rgba(109,40,217,0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        color: rgba(168,85,247,0.8);
+        font-family: 'Courier New', monospace;
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+      .guide-inline-code {
+        background: rgba(0,0,0,0.45);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 0.35rem;
+        padding: 0.15rem 0.55rem;
+        font-family: 'Courier New', monospace;
+        font-size: 0.78rem;
+        color: rgba(168,85,247,0.85);
+        word-break: break-all;
+      }
+      .guide-link {
+        color: rgba(139,92,246,0.75);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(139,92,246,0.2);
+        transition: color 0.2s, border-color 0.2s;
+      }
+      .guide-link:hover { color: rgba(200,160,255,1); border-color: rgba(200,160,255,0.4); }
+      .guide-ver { display: none; }
+      .guide-ver.active { display: block; }
+      .wiki-img {
+        border-radius: 0.75rem;
+        border: 1px solid rgba(255,255,255,0.07);
+        max-width: 100%;
+        margin-top: 1.25rem;
+        opacity: 0.82;
+        transition: opacity 0.3s;
+      }
+      .wiki-img:hover { opacity: 1; }
     </style>
   </head>
 
@@ -221,6 +312,7 @@
     <div class="kanji-layer" id="kanji-layer"></div>
     <div class="stars-layer" id="stars-layer"></div>
 
+    <div id="main-content">
     <!-- HERO -->
     <section class="min-h-screen flex flex-col justify-center items-center text-center relative z-10 px-4">
       <div id="hero-text-wrap">
@@ -337,6 +429,128 @@
     <footer class="py-16 text-center relative z-10">
       <p class="text-white/15 text-xs tracking-[0.4em] uppercase">Made with pain by kjukju aka imsqu</p>
     </footer>
+    </div><!-- /#main-content -->
+
+    <!-- ══════════════════════════════════════════════
+         WIKI — only visible at index.html#wiki
+         ══════════════════════════════════════════════ -->
+    <div id="wiki-content">
+      <div class="max-w-3xl mx-auto px-6 md:px-10 py-20 relative z-10">
+
+        <!-- header row -->
+        <a href="index.html" id="wiki-back" class="text-white/25 text-xs tracking-[0.35em] uppercase hover:text-white/55 transition-colors mb-10 inline-block">&larr; Back to site</a>
+        <h1 class="text-4xl font-extrabold glow-text mb-2" style="letter-spacing:0.04em;">Wiki</h1>
+        <p class="text-white/20 text-xs tracking-[0.35em] uppercase mb-10">Setup Guides</p>
+
+        <!-- toggle switch -->
+        <div class="flex items-center gap-3 mb-10">
+          <span class="text-white/25 text-xs tracking-[0.25em] uppercase">original</span>
+          <input type="checkbox" class="wiki-tgl" id="guide-toggle" />
+          <span class="text-white/25 text-xs tracking-[0.25em] uppercase">clean</span>
+        </div>
+
+        <div class="section-divider mb-12"></div>
+
+        <!-- ── Guide 1: Token ── -->
+        <div class="guide-card">
+          <h2 class="text-lg font-semibold mb-6 text-white/80">How to get CharacterAI Token</h2>
+
+          <!-- original -->
+          <div class="guide-ver active" id="g1-orig">
+            <div class="guide-step">
+              <div class="guide-num">1</div>
+              <p class="text-white/35 text-sm leading-relaxed">login to character.ai</p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">2</div>
+              <p class="text-white/35 text-sm leading-relaxed">open <a href="https://character.ai/chat/_FrgO6M-xCuTi72BYHbt-dQN2QsjNXnl-eKJGrjJttc" target="_blank" rel="noopener" class="guide-link break-all">character.ai/chat/_FrgO6M-xCuTi72BYHbt-dQN2QsjNXnl-eKJGrjJttc</a></p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">3</div>
+              <p class="text-white/35 text-sm leading-relaxed">press F12 / open developer tools</p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">4</div>
+              <p class="text-white/35 text-sm leading-relaxed">type something to ai like <span class="guide-inline-code">"nah bro i'll pass, your game suck ngl"</span></p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">5</div>
+              <p class="text-white/35 text-sm leading-relaxed">get token like on image from <span class="guide-inline-code">Token HERE IS YOUR TOKEN</span></p>
+            </div>
+            <img src="site/asset/example.png" alt="Token location example" class="wiki-img" />
+          </div>
+
+          <!-- clean -->
+          <div class="guide-ver" id="g1-clean">
+            <div class="guide-step">
+              <div class="guide-num">1</div>
+              <p class="text-white/35 text-sm leading-relaxed">Log in to your account at <a href="https://character.ai" target="_blank" rel="noopener" class="guide-link">character.ai</a></p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">2</div>
+              <p class="text-white/35 text-sm leading-relaxed">Open any character chat &mdash; for example <a href="https://character.ai/chat/_FrgO6M-xCuTi72BYHbt-dQN2QsjNXnl-eKJGrjJttc" target="_blank" rel="noopener" class="guide-link">this one</a></p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">3</div>
+              <p class="text-white/35 text-sm leading-relaxed">Press <span class="guide-inline-code">F12</span> to open Developer Tools, then switch to the <span class="guide-inline-code">Network</span> tab</p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">4</div>
+              <p class="text-white/35 text-sm leading-relaxed">Send any message to the AI &mdash; this triggers a network request you can inspect</p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">5</div>
+              <p class="text-white/35 text-sm leading-relaxed">Click one of the requests, open the <span class="guide-inline-code">Headers</span> section and find <span class="guide-inline-code">Authorization</span> &mdash; your token is the value right after <span class="guide-inline-code">Token&nbsp;</span></p>
+            </div>
+            <img src="site/asset/example.png" alt="Token location example" class="wiki-img" />
+          </div>
+        </div>
+
+        <!-- ── Guide 2: Character ID ── -->
+        <div class="guide-card">
+          <h2 class="text-lg font-semibold mb-6 text-white/80">How to get Character ID</h2>
+
+          <!-- original -->
+          <div class="guide-ver active" id="g2-orig">
+            <div class="guide-step">
+              <div class="guide-num">1</div>
+              <p class="text-white/35 text-sm leading-relaxed">click at some bot, like this one: <a href="https://character.ai/chat/_FrgO6M-xCuTi72BYHbt-dQN2QsjNXnl-eKJGrjJttc" target="_blank" rel="noopener" class="guide-link break-all">character.ai/chat/_FrgO6M-xCuTi72BYHbt-dQN2QsjNXnl-eKJGrjJttc</a></p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">2</div>
+              <p class="text-white/35 text-sm leading-relaxed">the character_id is exactly inside link</p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">3</div>
+              <p class="text-white/35 text-sm leading-relaxed">example: <span class="guide-inline-code">_FrgO6M-xCuTi72BYHbt-dQN2QsjNXnl-eKJGrjJttc</span></p>
+            </div>
+          </div>
+
+          <!-- clean -->
+          <div class="guide-ver" id="g2-clean">
+            <div class="guide-step">
+              <div class="guide-num">1</div>
+              <p class="text-white/35 text-sm leading-relaxed">Open Character.AI and go to any bot's chat page</p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">2</div>
+              <p class="text-white/35 text-sm leading-relaxed">Look at the URL in your browser's address bar &mdash; the character ID is the last segment after <span class="guide-inline-code">/chat/</span></p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">3</div>
+              <p class="text-white/35 text-sm leading-relaxed">Example URL:<br/><span class="guide-inline-code" style="display:inline-block;margin-top:0.4rem;">character.ai/chat/<span style="color:rgba(168,85,247,1);">_FrgO6M-xCuTi72BYHbt-dQN2QsjNXnl-eKJGrjJttc</span></span></p>
+            </div>
+            <div class="guide-step">
+              <div class="guide-num">4</div>
+              <p class="text-white/35 text-sm leading-relaxed">The purple portion is your character ID: <span class="guide-inline-code">_FrgO6M-xCuTi72BYHbt-dQN2QsjNXnl-eKJGrjJttc</span></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- wiki footer -->
+        <p class="text-white/10 text-xs tracking-[0.4em] uppercase text-center mt-16">Parallax Engine &mdash; Wiki</p>
+      </div>
+    </div><!-- /#wiki-content -->
 
     <script>
       /* Kanji layer */
@@ -577,6 +791,48 @@
         else if(copied_time===3){btn.remove();}
         is_copied=true;
       }
+
+      /* ── Wiki hash routing ── */
+      (function(){
+        const main   = document.getElementById('main-content');
+        const wiki   = document.getElementById('wiki-content');
+        const back   = document.getElementById('wiki-back');
+        const toggle = document.getElementById('guide-toggle');
+
+        function applyRoute(){
+          if(window.location.hash === '#wiki'){
+            main.style.display = 'none';
+            wiki.style.display = 'block';
+          } else {
+            main.style.display = '';
+            wiki.style.display = 'none';
+          }
+        }
+
+        applyRoute();
+        window.addEventListener('hashchange', applyRoute);
+
+        /* back button – remove hash without full reload */
+        if(back){
+          back.addEventListener('click', function(e){
+            e.preventDefault();
+            history.pushState('', document.title, window.location.pathname + window.location.search);
+            applyRoute();
+            window.scrollTo({top:0, behavior:'smooth'});
+          });
+        }
+
+        /* guide version toggle */
+        if(toggle){
+          toggle.addEventListener('change', function(){
+            const clean = this.checked;
+            document.getElementById('g1-orig').classList.toggle('active', !clean);
+            document.getElementById('g1-clean').classList.toggle('active',  clean);
+            document.getElementById('g2-orig').classList.toggle('active', !clean);
+            document.getElementById('g2-clean').classList.toggle('active',  clean);
+          });
+        }
+      })();
     </script>
   </body>
 </html>
