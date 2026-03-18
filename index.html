@@ -552,6 +552,96 @@
       </div>
     </div><!-- /#wiki-content -->
 
+    <!-- ══════════════════════════════════════════════
+         TEMPORARY — hidden content imported from Untitled-1.html
+         visible at index.html#something_temporary
+         ══════════════════════════════════════════════ -->
+    <div id="something_temporary" style="display:none;">
+      <style>
+      /* Imported styles (kept minimal and local) */
+      .external-container { max-width:1100px; margin:auto; padding:40px; }
+      .external-card { background:#161b22; padding:25px; margin-bottom:25px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.5); color:#e6edf3; }
+      .external-highlight { color:#3fb950; font-weight:bold; }
+      .external-warning { color:#ff7b72; font-weight:bold; }
+      pre.external-pre { background:#0d1117; padding:15px; border-radius:10px; overflow-x:auto; color:#79c0ff; }
+      </style>
+
+      <div class="external-container">
+
+        <h1>🔥 Local AI Setup Guide (GGUF + Instruct)</h1>
+
+        <div class="external-card">
+        <h2>📦 1. Narzędzie (WebUI)</h2>
+        <pre class="external-pre">https://github.com/oobabooga/text-generation-webui</pre>
+        <p>✔ działa na Linuxie<br>✔ ma tryb API<br>✔ pozwala uruchomić modele lokalnie</p>
+        </div>
+
+        <div class="external-card">
+        <h2>🤖 2. Skąd brać modele</h2>
+        <pre class="external-pre">https://huggingface.co/models?pipeline_tag=text-generation&library=gguf</pre>
+        <ul>
+          <li>✔ Instruct</li>
+          <li>✔ GGUF</li>
+          <li>✔ 6B – 128B parametrów</li>
+        </ul>
+        </div>
+
+        <div class="external-card">
+        <h2>🧠 3. Typy modeli</h2>
+        <h3>Instruct vs Base</h3>
+        <ul>
+          <li><span class="external-highlight">Instruct</span> → rozumie polecenia (najlepsze do tasków)</li>
+          <li>Base → zwykłe, surowe modele</li>
+        </ul>
+
+        <h3>Rozmiary modeli</h3>
+        <ul>
+          <li><b>7B</b> → szybki, tani, do lekkich tasków</li>
+          <li><b>13B</b> → dużo lepsze rozumienie i logika</li>
+          <li><b>23B</b> → wysoka jakość, lepsze reasoning</li>
+          <li><b>40B+</b> → bardzo zaawansowana jakość, wymagająca sprzętu</li>
+        </ul>
+
+        <p>👉 Zwykle: więcej parametrów → lepsze rozumienie kontekstu i planowanie.</p>
+        </div>
+
+        <div class="external-card">
+        <h2>⚙️ 4. Kwantyzacja GGUF</h2>
+        <p>GGUF = format zoptymalizowany pod wydajność i szybkość.</p>
+        <h3>Poziomy:</h3>
+        <ul>
+          <li>Q2_K → bardzo szybkie, ale słabsza jakość</li>
+          <li>Q4 → balans</li>
+          <li>Q6_K → dobra jakość</li>
+          <li>Q8_0 → naprawde bardzo dobra jakos</li>
+          <li class="external-highlight">F16 → najlepsza precyzja</li>
+        </ul>
+        <p class="external-warning">👉 Do dokładnych planów i logicznych odpowiedzi: Q8_0 lub F16 jeśli jest dostępna.</p>
+        </div>
+
+        <div class="external-card">
+        <h2>🧩 5. Context Size (ctx-size)</h2>
+        <p>Context size (ctx-size) = ile tokenów model może „widzieć” naraz.</p>
+        <ul>
+          <li>większy ctx → lepsze zrozumienie długich danych</li>
+          <li>po przekroczeniu limitu → model zapomina wcześniejsze rzeczy</li>
+        </ul>
+        <p class="external-warning">👉 Jeśli GGUF nie pokazuje – szukaj oryginalnego modelu i configu!</p>
+        </div>
+
+        <div class="external-card">
+        <h2>🚀 6. Model na start</h2>
+        <pre class="external-pre">https://huggingface.co/MaziyarPanahi/Mistral-7B-Instruct-v0.3-GGUF</pre>
+        <ul>
+          <li>✔ 7B – dobra wydajność</li>
+          <li>✔ Instrukcje = model Instruct</li>
+          <li>✔ GGUF – zoptymalizowany</li>
+        </ul>
+        </div>
+
+        <p class="external-highlight">Rekomendowane: Mistral‑7B‑Instruct‑v0.3‑GGUF + Q8_0 lub F16</p>
+      </div>
+    </div><!-- /#something_temporary -->
     <script>
       /* Kanji layer */
       (function(){
@@ -800,12 +890,20 @@
         const toggle = document.getElementById('guide-toggle');
 
         function applyRoute(){
-          if(window.location.hash === '#wiki'){
+          const hash = window.location.hash;
+          const temp = document.getElementById('something_temporary');
+          if(hash === '#wiki'){
             main.style.display = 'none';
             wiki.style.display = 'block';
+            if(temp) temp.style.display = 'none';
+          } else if(hash === '#something_temporary'){
+            main.style.display = 'none';
+            wiki.style.display = 'none';
+            if(temp) temp.style.display = 'block';
           } else {
             main.style.display = '';
             wiki.style.display = 'none';
+            if(temp) temp.style.display = 'none';
           }
         }
 
