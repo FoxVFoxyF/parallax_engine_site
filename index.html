@@ -558,88 +558,184 @@
          ══════════════════════════════════════════════ -->
     <div id="something_temporary" style="display:none;">
       <style>
-      /* Imported styles (kept minimal and local) */
-      .external-container { max-width:1100px; margin:auto; padding:40px; }
-      .external-card { background:#161b22; padding:25px; margin-bottom:25px; border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.5); color:#e6edf3; }
-      .external-highlight { color:#3fb950; font-weight:bold; }
-      .external-warning { color:#ff7b72; font-weight:bold; }
-      pre.external-pre { background:#0d1117; padding:15px; border-radius:10px; overflow-x:auto; color:#79c0ff; }
+  /* Match wiki: subtle translucent cards, soft borders, readable text */
+  .container.external { max-width: 1100px; margin: auto; padding: 24px; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+  .container.external h1, .container.external h2, .container.external h3 { color: rgba(255,255,255,0.92); margin:0 0 0.6rem 0; }
+  .container.external h1 { font-size:1.6rem; font-weight:800; text-align:center; margin-bottom:1rem; }
+  .card.external { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.065); border-radius: 1rem; padding: 1.25rem 1.5rem; margin-bottom:1rem; color: rgba(255,255,255,0.92); }
+  .card.external h2 { font-size:1.05rem; margin-bottom:0.5rem; color: rgba(255,255,255,0.95); }
+  .external-code { background: rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.06); border-radius: 0.35rem; padding: 0.12rem 0.5rem; color: rgba(168,85,247,0.95); font-family: 'Courier New', monospace; font-size:0.86rem; }
+  pre.external { background: rgba(0,0,0,0.45); padding: 12px; border-radius: 0.6rem; overflow-x: auto; color: rgba(168,85,247,0.92); border: 1px solid rgba(255,255,255,0.03); }
+  ul.external { padding-left: 20px; color: rgba(255,255,255,0.8); }
+  .highlight.external { color: #7ee787; font-weight:600; }
+  .warning.external { color: #ff8b82; font-weight:600; }
+  a.external-link { color: rgba(139,92,246,0.85); text-decoration: none; border-bottom: 1px solid rgba(139,92,246,0.12); }
       </style>
 
-      <div class="external-container">
+      <div class="container external">
 
-        <h1>🔥 Local AI Setup Guide (GGUF + Instruct)</h1>
+<h1 class="external">🔥 Local AI Setup Guide (GGUF + Instruct)</h1>
 
-        <div class="external-card">
-        <h2>📦 1. Narzędzie (WebUI)</h2>
-        <pre class="external-pre">https://github.com/oobabooga/text-generation-webui</pre>
-        <p>✔ działa na Linuxie<br>✔ ma tryb API<br>✔ pozwala uruchomić modele lokalnie</p>
-        </div>
+<div class="card external">
+<h2 class="external">📦 1. Narzędzie (WebUI)</h2>
+<pre class="external">https://github.com/oobabooga/text-generation-webui</pre>
+<p>
+✔ działa na Linuxie<br>
+✔ ma tryb API<br>
+✔ pozwala uruchomić modele lokalnie
+</p>
+</div>
 
-        <div class="external-card">
-        <h2>🤖 2. Skąd brać modele</h2>
-        <pre class="external-pre">https://huggingface.co/models?pipeline_tag=text-generation&library=gguf</pre>
-        <ul>
-          <li>✔ Instruct</li>
-          <li>✔ GGUF</li>
-          <li>✔ 6B – 128B parametrów</li>
-        </ul>
-        </div>
+<div class="card external">
+<h2 class="external">🤖 2. Skąd brać modele</h2>
+<pre class="external">https://huggingface.co/models?pipeline_tag=text-generation&library=gguf</pre>
+<ul class="external">
+  <li>✔ Instruct</li>
+  <li>✔ GGUF</li>
+  <li>✔ 6B – 128B parametrów</li>
+</ul>
+</div>
 
-        <div class="external-card">
-        <h2>🧠 3. Typy modeli</h2>
-        <h3>Instruct vs Base</h3>
-        <ul>
-          <li><span class="external-highlight">Instruct</span> → rozumie polecenia (najlepsze do tasków)</li>
-          <li>Base → zwykłe, surowe modele</li>
-        </ul>
+<div class="card external">
+<h2 class="external">🧠 3. Typy modeli</h2>
+<h3 class="external">Instruct vs Base</h3>
+<ul class="external">
+  <li><span class="highlight external">Instruct</span> → rozumie polecenia (najlepsze do tasków)</li>
+  <li>Base → zwykłe, surowe modele</li>
+</ul>
 
-        <h3>Rozmiary modeli</h3>
-        <ul>
-          <li><b>7B</b> → szybki, tani, do lekkich tasków</li>
-          <li><b>13B</b> → dużo lepsze rozumienie i logika</li>
-          <li><b>23B</b> → wysoka jakość, lepsze reasoning</li>
-          <li><b>40B+</b> → bardzo zaawansowana jakość, wymagająca sprzętu</li>
-        </ul>
+<h3 class="external">Rozmiary modeli</h3>
+<ul class="external">
+  <li><b>7B</b> → szybki, tani, do lekkich tasków</li>
+  <li><b>13B</b> → dużo lepsze rozumienie i logika</li>
+  <li><b>23B</b> → wysoka jakość, lepsze reasoning</li>
+  <li><b>40B+</b> → bardzo zaawansowana jakość, wymagająca sprzętu</li>
+</ul>
 
-        <p>👉 Zwykle: więcej parametrów → lepsze rozumienie kontekstu i planowanie.</p>
-        </div>
+<p>👉 Zwykle: więcej parametrów → lepsze rozumienie kontekstu i planowanie.</p>
+</div>
 
-        <div class="external-card">
-        <h2>⚙️ 4. Kwantyzacja GGUF</h2>
-        <p>GGUF = format zoptymalizowany pod wydajność i szybkość.</p>
-        <h3>Poziomy:</h3>
-        <ul>
-          <li>Q2_K → bardzo szybkie, ale słabsza jakość</li>
-          <li>Q4 → balans</li>
-          <li>Q6_K → dobra jakość</li>
-          <li>Q8_0 → naprawde bardzo dobra jakos</li>
-          <li class="external-highlight">F16 → najlepsza precyzja</li>
-        </ul>
-        <p class="external-warning">👉 Do dokładnych planów i logicznych odpowiedzi: Q8_0 lub F16 jeśli jest dostępna.</p>
-        </div>
+<div class="card external">
+<h2 class="external">⚙️ 4. Kwantyzacja GGUF</h2>
+<p>GGUF = format zoptymalizowany pod wydajność i szybkość.</p>
 
-        <div class="external-card">
-        <h2>🧩 5. Context Size (ctx-size)</h2>
-        <p>Context size (ctx-size) = ile tokenów model może „widzieć” naraz.</p>
-        <ul>
-          <li>większy ctx → lepsze zrozumienie długich danych</li>
-          <li>po przekroczeniu limitu → model zapomina wcześniejsze rzeczy</li>
-        </ul>
-        <p class="external-warning">👉 Jeśli GGUF nie pokazuje – szukaj oryginalnego modelu i configu!</p>
-        </div>
+<h3 class="external">Poziomy:</h3>
+<ul class="external">
+  <li>Q2_K → bardzo szybkie, ale słabsza jakość</li>
+  <li>Q4 → balans</li>
+  <li>Q6_K → dobra jakość</li>
+  <li>Q8_0 → naprawde bardzo dobra jakos</li>
+  <li class="highlight external">F16 → najlepsza precyzja</li>
+  <h2 class="external">ciekawostka: tyle ile model ważdy takie jest zapotrzebowanie na pamięć</h2>
+</ul>
 
-        <div class="external-card">
-        <h2>🚀 6. Model na start</h2>
-        <pre class="external-pre">https://huggingface.co/MaziyarPanahi/Mistral-7B-Instruct-v0.3-GGUF</pre>
-        <ul>
-          <li>✔ 7B – dobra wydajność</li>
-          <li>✔ Instrukcje = model Instruct</li>
-          <li>✔ GGUF – zoptymalizowany</li>
-        </ul>
-        </div>
+<h3 class="external">Przykłady:</h3>
+<ul class="external">
+  <li>13B Q6_K → szybkie, lekka strata jakości</li>
+  <li>13B Q8_0 → wolniejsze, ale dokładniejsze</li>
+  <li>23B F16 → najlepsze i najwolniejsze</li>
+</ul>
 
-        <p class="external-highlight">Rekomendowane: Mistral‑7B‑Instruct‑v0.3‑GGUF + Q8_0 lub F16</p>
+<p class="warning external">👉 Do dokładnych planów i logicznych odpowiedzi: Q8_0 lub F16 jeśli jest dostępna.</p>
+</div>
+
+<div class="card external">
+<h2 class="external">🧩 5. Context Size (ctx-size)</h2>
+<p>Context size (ctx-size) = ile tokenów model może „widzieć” naraz.</p>
+
+<ul class="external">
+  <li>większy ctx → lepsze zrozumienie długich danych</li>
+  <li>po przekroczeniu limitu → model zapomina wcześniejsze rzeczy</li>
+</ul>
+
+<h3 class="external">WAŻNE:</h3>
+<p>W modelach GGUF często tej informacji nie ma — trzeba sprawdzić oryginalny model.</p>
+
+<p>Jak to zrobić:</p>
+<ul class="external">
+  <li>wejdź na stronę GGUF modelu</li>
+  <li>kliknij link do oryginalnego modelu (np. w README)</li>
+  <li>sprawdź jego <code class="external-code">config.json</code></li>
+</ul>
+
+<h3 class="external">Przykład:</h3>
+<pre class="external">https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-1M/blob/main/config.json</pre>
+<pre class="external">{
+  "max_position_embeddings": 1010000
+}
+</pre>
+<p>✔ To jest ctx-size ≈ 1M tokenów.</p>
+
+<p class="warning external">👉 Jeśli GGUF nie pokazuje – szukaj oryginalnego modelu i configu!</p>
+</div>
+
+<div class="card external">
+<h2 class="external">🚀 6. Model na start</h2>
+<p>Dobry start to:</p>
+
+<pre class="external">https://huggingface.co/MaziyarPanahi/Mistral-7B-Instruct-v0.3-GGUF</pre>
+
+<ul class="external">
+  <li>✔ 7B – dobra wydajność</li>
+  <li>✔ Instrukcje = model Instruct</li>
+  <li>✔ GGUF – zoptymalizowany</li>
+</ul>
+</div>
+<div class="card external">
+<h2 class="external">🛠 7. Architektura modeli i MoE</h2>
+
+<h3 class="external">Dlaczego architektura się liczy</h3>
+<p>Nie tylko liczba parametrów decyduje. <span class="highlight external">Dobra architektura</span> może sprawić, że mniejszy model (7B, 13B) wyprzedzi większy (27B+) w testach logicznych i planowania</p>
+
+<h3 class="external">Fine‑tuned modele</h3>
+<p>Fine‑tuned = model dopasowany do konkretnego zadania. <span class="highlight external">13B FT</span> może bić 27B bez FT bo ma „nauczenie celowe” pod planowanie, QA lub chat</p>
+
+<h3 class="external">MoE – Mixture of Experts</h3>
+<p>MoE aktywuje tylko wybrane części mózgu AI podczas generacji. Zamiast 100% neuronu używa np ~27%, wybierając najbardziej trafnych ekspertów. <span class="highlight external">Szybsze i inteligentniejsze generowanie</span></p>
+<p>Najczęściej używane w firmach i większych modelach 27B+, bo <span class="highlight external">daje dużą wydajność przy ograniczonej mocy obliczeniowej</span></p>
+
+<h3 class="external">Jak szukać modeli pod planowanie i logiczne zadania</h3> 
+<p>Wpisz tego prompta do ai <code class="external-code">najlepsze llm na hugging face do tworzenia zaawansowanego planu lekcji z konfliktami, 7b 13b 15b 27b 40b 70b 128b wersje finetunowane pod te taski + kolejne przedstawienie modeli 7b 13b itp które poprostu są dobre w benchmarkach logicznych i planowaniu, content size powinien być też napisany</code></p>
+<p>tutaj mam już output <a href="https://chatgpt.com/share/69bac7c6-68b8-800c-8c2c-63a70aba884b">https://chatgpt.com/share/69bac7c6-68b8-800c-8c2c-63a70aba884b</a></p>
+
+<h3 class="external">Przykłady ciekawych modeli</h3>
+<ul class="external">
+  <li>🔥 7B‑13B: Mistral 7B Instruct, Qwen2.5 7B, Gemma 3 12B, Vicuna 13B</li>
+  <li>🔥 27B+: Gemma 3 27B, Mixtral / MoE style</li>
+  <li>💡 MoE: aktywuje tylko wybrane części mózgu AI (~27%), przyspiesza generację i poprawia trafność odpowiedzi</li>
+</ul>
+</div>
+
+<div class="card external">
+<h2 class="external">🧪 8. Qwen2.5‑7B vs Mistral‑7B – przykładowe różnice</h2>
+
+<h3 class="external">Qwen2.5‑7B</h3>
+<ul class="external">
+  <li>Trenowany na dużych datasetach: web, książki, newsy, kod, STEM → świetny w benchmarkach akademickich</li>
+  <li>Wyniki testów: MMLU ~74, GSM8K ~85, MATH ~50, HumanEval ~58</li>
+  <li>Silny w matematyce, kodzie, logic reasoning → dokładne i szybkie rozwiązania</li>
+  <li>Multilingual (29+ języków), długi context window</li>
+  <li>Przykład użycia: rozwiązywanie zadań logicznych i planowanie krok po kroku</li>
+</ul>
+
+<h3 class="external">Mistral‑7B Instruct</h3>
+<ul class="external">
+  <li>Trenowany na publicznych danych i fine‑tuning pod instrukcje → kreatywne i płynne generowanie</li>
+  <li>Lepiej rozumie naturalne polecenia i instrukcje użytkownika</li>
+  <li>Benchmarki: czasem słabszy w akademickich testach, ale lepszy w ogólnym „inteligentnym” flow tekstu</li>
+  <li>Przykład użycia: tworzenie strukturalnych planów projektów, streszczenia, kreatywne treści</li>
+</ul>
+
+<h3 class="external">🔥 Przykład realnej różnicy</h3>
+<p>Prompt: „Stwórz szczegółowy plan rozwiązania problemu matematycznego i logicznego”</p>
+<ul class="external">
+  <li><span class="highlight external">Qwen2.5‑7B</span> → dokładne kroki, logiczne wnioskowanie, szybkie i precyzyjne</li>
+  <li><span class="highlight external">Mistral‑7B</span> → bardziej płynne i rozbudowane wytłumaczenie, lepsze dla ogólnych instrukcji i kreatywnego flow</li>
+</ul>
+</div>
+
+<p class="highlight external">Rekomendowane: Mistral‑7B‑Instruct‑v0.3‑GGUF + Q8_0 lub F16</p>
+
       </div>
     </div><!-- /#something_temporary -->
     <script>
