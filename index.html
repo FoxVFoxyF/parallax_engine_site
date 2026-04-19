@@ -196,12 +196,30 @@
         background: rgba(255,255,255,0.02);
         border: 1px solid rgba(255,255,255,0.055);
         border-radius: 1rem;
-        transition: border-color 0.3s, background 0.3s, transform 0.3s;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        will-change: transform;
+        transform-style: preserve-3d;
+        position: relative;
+        overflow: hidden;
+        --mx: 50%;
+        --my: 50%;
+      }
+      .feature-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(circle 120px at var(--mx) var(--my), rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
       }
       .feature-card:hover {
         border-color: rgba(168,85,247,0.3);
-        background: rgba(168,85,247,0.05);
-        transform: translateY(-5px);
+        transition-delay: 0s;
+      }
+      .feature-card:hover::after {
+        opacity: 1;
       }
       #discord-section {
         transition: opacity 0.6s ease;
@@ -397,6 +415,505 @@
         </div>
       </div>
     </section>
+
+    <div class="section-divider"></div>
+
+    <!-- APP PREVIEW -->
+    <section id="preview" class="py-28 px-6 md:px-20 relative z-10">
+      <h2 class="text-3xl font-bold text-center mb-4 glow-text inline-block w-full" data-text="App Preview">App Preview</h2>
+      <p class="text-white/30 text-sm text-center mb-12 tracking-wider">Interactive UI demonstration — drag providers, switch panels, explore features</p>
+
+      <div class="max-w-5xl mx-auto">
+        <!-- App Container -->
+        <div id="app-preview-container" class="relative rounded-xl overflow-hidden border border-[rgba(50,35,90,0.2)]" style="height: 500px; background: #040406; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 13px; color: #b0b5c8;">
+          
+          <!-- Particles Background -->
+          <canvas id="preview-particles" class="absolute inset-0 pointer-events-none" style="z-index: 0; opacity: 0.6;"></canvas>
+
+          <!-- App Titlebar -->
+          <div class="h-8 flex items-center justify-between px-3 relative z-10" style="background: rgba(4,4,6,0.6); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(50,35,90,0.1);">
+            <div class="flex items-center gap-1.5">
+              <span style="font-weight: 700; font-size: 10px; color: #a78bfa; letter-spacing: 3px; text-transform: uppercase; opacity: 0.5;">parallax</span>
+              <span style="font-size: 9px; color: #28283e; letter-spacing: 1px;">0.02</span>
+            </div>
+            <div class="flex gap-px">
+              <button class="w-7 h-6 flex items-center justify-center rounded transition-all hover:bg-white/[0.04]" style="color: #4a4a70; font-size: 10px;">&#x2013;</button>
+              <button class="w-7 h-6 flex items-center justify-center rounded transition-all hover:bg-[#f87171] hover:text-white" style="color: #4a4a70; font-size: 10px;">&#x2715;</button>
+            </div>
+          </div>
+
+          <!-- App Stage (Dashboard) -->
+          <div id="app-stage" class="absolute inset-x-0 top-8 bottom-12 flex items-center justify-center z-10">
+            <div class="flex items-center" style="gap: 80px;">
+              <!-- Left: Server Status -->
+              <div class="flex flex-col" style="gap: 18px; min-width: 140px;">
+                <div class="flex items-center" style="gap: 11px;">
+                  <span id="dot-flask" class="w-2 h-2 rounded-full transition-all duration-500" style="background: #28283e;"></span>
+                  <span style="font-size: 13px; font-weight: 600; color: #4a4a70; letter-spacing: 0.3px;">Flask</span>
+                  <span style="font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 12px; color: #28283e;">:5000</span>
+                </div>
+                <div class="flex items-center" style="gap: 11px;">
+                  <span id="dot-express" class="w-2 h-2 rounded-full transition-all duration-500" style="background: #28283e;"></span>
+                  <span style="font-size: 13px; font-weight: 600; color: #4a4a70; letter-spacing: 0.3px;">Express</span>
+                  <span style="font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 12px; color: #28283e;">:3000</span>
+                </div>
+              </div>
+
+              <!-- Center: Power Button -->
+              <div class="flex flex-col items-center" style="gap: 20px;">
+                <button id="preview-power-btn" class="rounded-full flex items-center justify-center relative group transition-all duration-300" style="width: 130px; height: 130px; border: 2px solid rgba(124,58,237,0.2); background: rgba(124,58,237,0.04); color: #a78bfa;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width: 40px; height: 40px;">
+                    <line x1="12" y1="2" x2="12" y2="12"/>
+                    <path d="M16.24 7.76a6 6 0 11-8.49 0"/>
+                  </svg>
+                  <div class="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="box-shadow: 0 0 30px rgba(124,58,237,0.12);"></div>
+                </button>
+                <div class="flex items-center" style="gap: 7px;">
+                  <span id="dot-main" class="w-2 h-2 rounded-full transition-all duration-500" style="background: #28283e;"></span>
+                  <span id="status-text" style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #28283e; transition: color 0.3s;">Offline</span>
+                </div>
+              </div>
+
+              <!-- Right: Endpoints -->
+              <div class="flex flex-col" style="gap: 10px; min-width: 140px;">
+                <div class="flex items-center" style="gap: 8px;">
+                  <span style="font-size: 9px; font-weight: 700; font-family: 'Cascadia Code', 'Consolas', monospace; padding: 2px 6px; border-radius: 3px; background: rgba(124,58,237,0.1); color: #a78bfa; letter-spacing: 0.6px; text-transform: uppercase;">POST</span>
+                  <code style="font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 12px; color: #4a4a70;">/send-message</code>
+                </div>
+                <div class="flex items-center" style="gap: 8px;">
+                  <span style="font-size: 9px; font-weight: 700; font-family: 'Cascadia Code', 'Consolas', monospace; padding: 2px 6px; border-radius: 3px; background: rgba(96,165,250,0.08); color: #60a5fa; letter-spacing: 0.6px; text-transform: uppercase;">WS</span>
+                  <code style="font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 12px; color: #4a4a70;">ws://:3000</code>
+                </div>
+                <div class="flex items-center" style="gap: 8px;">
+                  <span style="font-size: 9px; font-weight: 700; font-family: 'Cascadia Code', 'Consolas', monospace; padding: 2px 6px; border-radius: 3px; background: rgba(40,40,62,0.4); color: #4a4a70; letter-spacing: 0.6px; text-transform: uppercase;">POST</span>
+                  <code style="font-family: 'Cascadia Code', 'Consolas', monospace; font-size: 12px; color: #4a4a70; opacity: 0.6;">/message</code>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel: Config (slide from right) -->
+          <div id="panel-config" class="absolute top-8 right-0 bottom-12 w-[340px] transform translate-x-full transition-transform duration-[400ms] z-20" style="background: rgba(6,6,10,0.8); backdrop-filter: blur(20px); border-left: 1px solid rgba(50,35,90,0.1);">
+            <div class="flex items-center justify-between px-[18px] h-10 border-b" style="border-color: rgba(50,35,90,0.1);">
+              <h3 style="font-size: 10px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 2px;">Config</h3>
+              <button class="panel-close w-6 h-6 flex items-center justify-center rounded transition-all hover:bg-white/[0.04]" data-close="config" style="color: #4a4a70; font-size: 16px; line-height: 1;">&times;</button>
+            </div>
+            <div class="p-[18px] overflow-y-auto h-full" style="scrollbar-width: 3px;">
+              <p style="font-size: 8px; font-weight: 600; color: #28283e; text-transform: uppercase; letter-spacing: 1.5px; text-align: center; margin-bottom: 10px;">drag providers into slots below</p>
+
+              <!-- Provider Pool -->
+              <div class="flex flex-wrap gap-1.5 justify-center p-2.5 mb-4 rounded-[10px] border border-dashed transition-all" style="border-color: rgba(50,35,90,0.2); background: rgba(8,8,16,0.3); min-height: 42px;" id="provider-pool">
+                <div class="pool-tag cursor-grab active:cursor-grabbing flex items-center gap-1.5 px-2 py-1 rounded-md border transition-all" draggable="true" data-provider="cai" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.5);">
+                  <span style="font-size: 10px; font-weight: 600; color: #4a4a70; letter-spacing: 0.3px;">c.ai</span>
+                  <span style="font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 2px 5px; border-radius: 4px; background: rgba(52,211,153,0.1); color: #34d399; border: 1px solid rgba(52,211,153,0.2);">FREE</span>
+                </div>
+                <div class="pool-tag cursor-grab active:cursor-grabbing flex items-center gap-1.5 px-2 py-1 rounded-md border transition-all" draggable="true" data-provider="gpt" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.5);">
+                  <span style="font-size: 10px; font-weight: 600; color: #4a4a70; letter-spacing: 0.3px;">GPT</span>
+                  <span style="font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 2px 5px; border-radius: 4px; background: rgba(248,113,113,0.08); color: #f87171; border: 1px solid rgba(248,113,113,0.18);">PAID</span>
+                </div>
+                <div class="pool-tag cursor-grab active:cursor-grabbing flex items-center gap-1.5 px-2 py-1 rounded-md border transition-all" draggable="true" data-provider="openrouter" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.5);">
+                  <span style="font-size: 10px; font-weight: 600; color: #4a4a70; letter-spacing: 0.3px;">OpenRouter</span>
+                  <span style="font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 2px 5px; border-radius: 4px; background: rgba(251,191,36,0.08); color: #fbbf24; border: 1px solid rgba(251,191,36,0.18);">MIX</span>
+                </div>
+              </div>
+
+              <!-- Slot 1: Roleplay -->
+              <div class="slot-zone mb-4 rounded-[10px] overflow-hidden transition-all" data-slot="roleplay" style="border: 1px solid rgba(50,35,90,0.1); background: rgba(8,8,16,0.3);">
+                <div class="flex items-center gap-2 px-3 py-2 border-b" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.4);">
+                  <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold" style="border: 1px solid rgba(124,58,237,0.3); background: rgba(124,58,237,0.08); color: #a78bfa;">1</span>
+                  <span style="font-size: 9px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 1.5px;">AI for Roleplay</span>
+                </div>
+                <div class="slot-drop min-h-[46px] flex items-center justify-center p-3 transition-all" id="drop-roleplay" style="background: transparent;">
+                  <span style="font-size: 9px; color: #28283e; letter-spacing: 1px; text-transform: uppercase;">drop provider here</span>
+                </div>
+                <div class="slot-config overflow-hidden transition-all duration-[350ms]" id="cfg-roleplay" style="max-height: 0; padding: 0;"></div>
+              </div>
+
+              <!-- Slot 2: Engine -->
+              <div class="slot-zone mb-4 rounded-[10px] overflow-hidden transition-all" data-slot="engine" style="border: 1px solid rgba(50,35,90,0.1); background: rgba(8,8,16,0.3);">
+                <div class="flex items-center gap-2 px-3 py-2 border-b" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.4);">
+                  <span class="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold" style="border: 1px solid rgba(124,58,237,0.3); background: rgba(124,58,237,0.08); color: #a78bfa;">2</span>
+                  <span style="font-size: 9px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 1.5px;">Engine Brain</span>
+                </div>
+                <div class="slot-drop min-h-[46px] flex items-center justify-center p-3 transition-all" id="drop-engine" style="background: transparent;">
+                  <span style="font-size: 9px; color: #28283e; letter-spacing: 1px; text-transform: uppercase;">drop provider here</span>
+                </div>
+                <div class="slot-config overflow-hidden transition-all duration-[350ms]" id="cfg-engine" style="max-height: 0; padding: 0;"></div>
+              </div>
+
+              <button class="w-full py-2 rounded-md border transition-all text-[10px] font-bold uppercase tracking-wider" style="border-color: rgba(124,58,237,0.18); background: rgba(124,58,237,0.06); color: #a78bfa;" onmouseover="this.style.background='rgba(124,58,237,0.12)';this.style.borderColor='rgba(124,58,237,0.3)';" onmouseout="this.style.background='rgba(124,58,237,0.06)';this.style.borderColor='rgba(124,58,237,0.18)';">Save</button>
+            </div>
+          </div>
+
+          <!-- Panel: Brain (slide from left) -->
+          <div id="panel-brain" class="absolute top-8 left-0 bottom-12 w-[360px] transform -translate-x-full transition-transform duration-[400ms] z-20" style="background: rgba(6,6,10,0.8); backdrop-filter: blur(20px); border-right: 1px solid rgba(50,35,90,0.1);">
+            <div class="flex items-center justify-between px-[18px] h-10 border-b" style="border-color: rgba(50,35,90,0.1);">
+              <h3 style="font-size: 10px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 14px; filter: grayscale(0.3);">&#x1F9E0;</span> Engine Brain
+              </h3>
+              <button class="panel-close w-6 h-6 flex items-center justify-center rounded transition-all hover:bg-white/[0.04]" data-close="brain" style="color: #4a4a70; font-size: 16px; line-height: 1;">&times;</button>
+            </div>
+            <div class="p-[18px] overflow-y-auto h-full">
+              <!-- Neural Pulse -->
+              <div class="flex items-center justify-center gap-0 mb-5 py-2">
+                <div class="w-2 h-2 rounded-full" style="background: #a78bfa; box-shadow: 0 0 8px rgba(124,58,237,0.5); animation: pulseNode 2s ease-in-out infinite;"></div>
+                <div class="flex-1 h-0.5" style="background: linear-gradient(90deg, rgba(124,58,237,0.4), rgba(167,139,250,0.15), rgba(124,58,237,0.4));"></div>
+                <div class="w-2 h-2 rounded-full" style="background: #a78bfa; box-shadow: 0 0 8px rgba(124,58,237,0.5); animation: pulseNode 2s ease-in-out infinite 0.4s;"></div>
+                <div class="flex-1 h-0.5" style="background: linear-gradient(90deg, rgba(124,58,237,0.4), rgba(167,139,250,0.15), rgba(124,58,237,0.4));"></div>
+                <div class="w-2 h-2 rounded-full" style="background: #a78bfa; box-shadow: 0 0 8px rgba(124,58,237,0.5); animation: pulseNode 2s ease-in-out infinite 0.8s;"></div>
+              </div>
+
+              <!-- Method Grid -->
+              <div class="mb-5">
+                <span style="font-size: 8px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(50,35,90,0.1);">&#x26A1; Method</span>
+                <div class="grid grid-cols-4 gap-2">
+                  <button class="method-cell active flex flex-col items-center gap-1 p-3 rounded-[10px] border transition-all relative overflow-hidden" data-method="0" style="border-color: rgba(124,58,237,0.5); background: rgba(124,58,237,0.08); box-shadow: 0 0 18px rgba(124,58,237,0.12), inset 0 0 12px rgba(124,58,237,0.05);">
+                    <span class="text-lg font-bold font-mono text-purple-400">0</span>
+                    <span style="font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #4a4a70;">Free</span>
+                  </button>
+                  <button class="method-cell flex flex-col items-center gap-1 p-3 rounded-[10px] border transition-all relative overflow-hidden" data-method="1" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.5);">
+                    <span class="text-lg font-bold font-mono" style="color: #4a4a70;">1</span>
+                    <span style="font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #28283e;">Action</span>
+                  </button>
+                  <button class="method-cell flex flex-col items-center gap-1 p-3 rounded-[10px] border transition-all relative overflow-hidden" data-method="2" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.5);">
+                    <span class="text-lg font-bold font-mono" style="color: #4a4a70;">2</span>
+                    <span style="font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #28283e;">Extract</span>
+                  </button>
+                  <button class="method-cell flex flex-col items-center gap-1 p-3 rounded-[10px] border transition-all relative overflow-hidden" data-method="3" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.5);">
+                    <span class="text-lg font-bold font-mono" style="color: #4a4a70;">3</span>
+                    <span style="font-size: 7px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #28283e;">Strict</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Memory Dial -->
+              <div class="mb-5">
+                <span style="font-size: 8px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(50,35,90,0.1);">&#x1F4AC; Conversation Memory</span>
+                <p style="font-size: 9px; color: #28283e; margin-bottom: 12px; line-height: 1.5; opacity: 0.7;">How many message pairs to send as context</p>
+                <div class="flex items-center justify-center gap-4 mb-4">
+                  <button id="dial-minus" class="w-9 h-9 rounded-full border flex items-center justify-center text-lg transition-all" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.6); color: #a78bfa;" onmouseover="this.style.borderColor='rgba(124,58,237,0.4)';this.style.background='rgba(124,58,237,0.1)';this.style.boxShadow='0 0 14px rgba(124,58,237,0.15)';" onmouseout="this.style.borderColor='rgba(50,35,90,0.1)';this.style.background='rgba(12,12,20,0.6)';this.style.boxShadow='none';">&#x2212;</button>
+                  <div class="text-center min-w-[60px]">
+                    <span id="dial-value" class="text-3xl font-bold font-mono text-purple-400" style="text-shadow: 0 0 20px rgba(124,58,237,0.3);">1</span>
+                    <span style="font-size: 8px; text-transform: uppercase; letter-spacing: 2px; color: #28283e; display: block; margin-top: 2px;">pairs</span>
+                  </div>
+                  <button id="dial-plus" class="w-9 h-9 rounded-full border flex items-center justify-center text-lg transition-all" style="border-color: rgba(50,35,90,0.1); background: rgba(12,12,20,0.6); color: #a78bfa;" onmouseover="this.style.borderColor='rgba(124,58,237,0.4)';this.style.background='rgba(124,58,237,0.1)';this.style.boxShadow='0 0 14px rgba(124,58,237,0.15)';" onmouseout="this.style.borderColor='rgba(50,35,90,0.1)';this.style.background='rgba(12,12,20,0.6)';this.style.boxShadow='none';">+</button>
+                </div>
+                <div class="flex items-end justify-center gap-1" style="height: 40px; padding: 0 10px;">
+                  <div class="mem-bar flex-1 rounded-t transition-all flex items-center justify-center lit lit-current" style="max-width: 24px; height: 36px; background: rgba(124,58,237,0.35); border: 1px solid rgba(124,58,237,0.55); box-shadow: 0 0 14px rgba(124,58,237,0.25);"><span style="font-size: 7px; font-family: 'Cascadia Code', 'Consolas', monospace; color: #fff; font-weight: 600;">1</span></div>
+                  <div class="mem-bar flex-1 rounded-t transition-all flex items-center justify-center" style="max-width: 24px; height: 12px; background: rgba(40,40,62,0.5); border: 1px solid rgba(50,35,90,0.15);"><span style="font-size: 7px; font-family: 'Cascadia Code', 'Consolas', monospace; color: transparent; font-weight: 600;">2</span></div>
+                  <div class="mem-bar flex-1 rounded-t transition-all flex items-center justify-center" style="max-width: 24px; height: 12px; background: rgba(40,40,62,0.5); border: 1px solid rgba(50,35,90,0.15);"><span style="font-size: 7px; font-family: 'Cascadia Code', 'Consolas', monospace; color: transparent; font-weight: 600;">3</span></div>
+                  <div class="mem-bar flex-1 rounded-t transition-all flex items-center justify-center" style="max-width: 24px; height: 12px; background: rgba(40,40,62,0.5); border: 1px solid rgba(50,35,90,0.15);"><span style="font-size: 7px; font-family: 'Cascadia Code', 'Consolas', monospace; color: transparent; font-weight: 600;">4</span></div>
+                  <div class="mem-bar flex-1 rounded-t transition-all flex items-center justify-center" style="max-width: 24px; height: 12px; background: rgba(40,40,62,0.5); border: 1px solid rgba(50,35,90,0.15);"><span style="font-size: 7px; font-family: 'Cascadia Code', 'Consolas', monospace; color: transparent; font-weight: 600;">5</span></div>
+                </div>
+              </div>
+
+              <button class="w-full py-2 rounded-md border transition-all text-[10px] font-bold uppercase tracking-wider flex items-center justify-center gap-1.5" style="border-color: rgba(124,58,237,0.18); background: rgba(124,58,237,0.06); color: #a78bfa;" onmouseover="this.style.background='rgba(124,58,237,0.12)';this.style.borderColor='rgba(124,58,237,0.3)';" onmouseout="this.style.background='rgba(124,58,237,0.06)';this.style.borderColor='rgba(124,58,237,0.18)';">&#x26A1; Apply</button>
+            </div>
+          </div>
+
+          <!-- Dock -->
+          <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1 px-3 py-2 rounded-[20px] z-30" style="background: rgba(8,8,16,0.55); backdrop-filter: blur(16px); border: 1px solid rgba(50,35,90,0.1);">
+            <button class="dock-btn active w-9 h-9 rounded-[12px] flex items-center justify-center transition-all" data-panel="dashboard" title="Dashboard" style="background: rgba(124,58,237,0.12); color: #a78bfa;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width: 17px; height: 17px;"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            </button>
+            <div class="w-px h-4 mx-0.5" style="background: rgba(50,35,90,0.1);"></div>
+            <button class="dock-btn w-9 h-9 rounded-[12px] flex items-center justify-center transition-all" data-panel="config" title="Config" style="background: transparent; color: #4a4a70;" onmouseover="this.style.background='rgba(124,58,237,0.08)';this.style.color='#a78bfa';this.style.transform='translateY(-2px)';" onmouseout="if(!this.classList.contains('active')){this.style.background='transparent';this.style.color='#4a4a70';this.style.transform='none';}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width: 17px; height: 17px;"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+            </button>
+            <button class="dock-btn w-9 h-9 rounded-[12px] flex items-center justify-center transition-all" data-panel="brain" title="Engine Brain" style="background: transparent; color: #4a4a70;" onmouseover="this.style.background='rgba(124,58,237,0.08)';this.style.color='#a78bfa';this.style.transform='translateY(-2px)';" onmouseout="if(!this.classList.contains('active')){this.style.background='transparent';this.style.color='#4a4a70';this.style.transform='none';}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width: 17px; height: 17px;"><path d="M12 2a7 7 0 00-4.6 12.3c.3.2.6.6.7 1l.4 2.2h7l.4-2.2c.1-.4.4-.8.7-1A7 7 0 0012 2z"/><line x1="10" y1="20" x2="14" y2="20"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M9 10h0M15 10h0" stroke-linecap="round"/><path d="M9 14c1 1 5 1 6 0" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+
+          <!-- Hint overlay -->
+          <div id="preview-hint" class="absolute top-12 left-1/2 -translate-x-1/2 text-[10px] text-white/20 uppercase tracking-wider pointer-events-none transition-opacity duration-300">
+            Click buttons to explore
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <style>
+      /* App Preview Animations */
+      .pool-tag { cursor: grab; user-select: none; }
+      .pool-tag:hover { border-color: rgba(124,58,237,0.3) !important; background: rgba(124,58,237,0.06) !important; transform: translateY(-1px); }
+      .pool-tag.dragging { opacity: 0.4; transform: scale(0.95); }
+      .slot-drop.drag-over { background: rgba(124,58,237,0.06) !important; }
+      .slot-zone.has-provider { border-color: rgba(124,58,237,0.2) !important; }
+      .method-cell { position: relative; overflow: hidden; }
+      .method-cell::before { content: ''; position: absolute; inset: 0; border-radius: 10px; background: radial-gradient(circle at 50% 0%, rgba(124,58,237,0.15), transparent 70%); opacity: 0; transition: opacity 0.3s; }
+      .method-cell:hover::before { opacity: 1; }
+      .method-cell.active::before { opacity: 1; }
+      .method-cell.active { border-color: rgba(124,58,237,0.5) !important; background: rgba(124,58,237,0.08) !important; box-shadow: 0 0 18px rgba(124,58,237,0.12), inset 0 0 12px rgba(124,58,237,0.05) !important; }
+      .method-cell.active span:first-child { color: #a78bfa !important; }
+      .dock-btn.active { background: rgba(124,58,237,0.2) !important; color: #a78bfa !important; }
+      #preview-power-btn.running { border-color: rgba(52,211,153,0.5) !important; background: rgba(52,211,153,0.1) !important; color: #34d399 !important; box-shadow: 0 0 24px rgba(52,211,153,0.2) !important; }
+      #preview-power-btn.running:hover { border-color: rgba(248,113,113,0.4) !important; background: rgba(248,113,113,0.08) !important; color: #f87171 !important; box-shadow: 0 0 24px rgba(248,113,113,0.15) !important; }
+      #preview-power-btn:active { transform: scale(0.95); }
+      .dot.up { background: #34d399 !important; box-shadow: 0 0 8px rgba(52,211,153,0.6) !important; animation: dotPulse 3s ease-in-out infinite; }
+      @keyframes dotPulse { 0%, 100% { box-shadow: 0 0 8px rgba(52,211,153,0.6); } 50% { box-shadow: 0 0 12px rgba(52,211,153,0.8); } }
+      @keyframes pulseNode { 0%, 100% { box-shadow: 0 0 6px rgba(124,58,237,0.4), 0 0 14px rgba(124,58,237,0.15); opacity: 0.6; } 50% { box-shadow: 0 0 12px rgba(124,58,237,0.7), 0 0 28px rgba(124,58,237,0.3); opacity: 1; } }
+      .mem-bar { display: flex; align-items: center; justify-content: center; }
+      .mem-bar.lit { background: rgba(124,58,237,0.3) !important; border-color: rgba(124,58,237,0.5) !important; height: 28px !important; }
+      .mem-bar.lit span { color: #a78bfa !important; }
+      .mem-bar.lit-current { background: rgba(124,58,237,0.35) !important; border-color: rgba(124,58,237,0.55) !important; box-shadow: 0 0 14px rgba(124,58,237,0.25) !important; height: 36px !important; }
+      .mem-bar.lit-current span { color: #fff !important; }
+      #app-preview-container ::-webkit-scrollbar { width: 3px; }
+      #app-preview-container ::-webkit-scrollbar-track { background: transparent; }
+      #app-preview-container ::-webkit-scrollbar-thumb { background: #28283e; border-radius: 3px; }
+    </style>
+
+    <script>
+    (function() {
+      // Particles/Stars Animation
+      const canvas = document.getElementById('preview-particles');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      
+      function resizeCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+      
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.size = Math.random() * 1.5 + 0.5;
+          this.speedX = (Math.random() - 0.5) * 0.3;
+          this.speedY = (Math.random() - 0.5) * 0.3;
+          this.opacity = Math.random() * 0.5 + 0.2;
+          this.fadeSpeed = Math.random() * 0.01 + 0.005;
+        }
+        update() {
+          this.x += this.speedX;
+          this.y += this.speedY;
+          this.opacity += Math.sin(Date.now() * 0.001 * this.fadeSpeed) * 0.01;
+          if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+            this.reset();
+          }
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(167, 139, 250, ${Math.max(0.1, this.opacity)})`;
+          ctx.fill();
+        }
+      }
+      
+      for (let i = 0; i < 50; i++) {
+        particles.push(new Particle());
+      }
+      
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+      // Power button toggle
+      const powerBtn = document.getElementById('preview-power-btn');
+      const statusText = document.getElementById('status-text');
+      const dotMain = document.getElementById('dot-main');
+      const dotFlask = document.getElementById('dot-flask');
+      const dotExpress = document.getElementById('dot-express');
+      let isRunning = false;
+
+      powerBtn.addEventListener('click', () => {
+        isRunning = !isRunning;
+        if (isRunning) {
+          powerBtn.classList.add('running');
+          statusText.textContent = 'Online';
+          statusText.style.color = '#34d399';
+          dotMain.classList.add('up');
+          setTimeout(() => { dotFlask.classList.add('up'); }, 400);
+          setTimeout(() => { dotExpress.classList.add('up'); }, 800);
+        } else {
+          powerBtn.classList.remove('running');
+          statusText.textContent = 'Offline';
+          statusText.style.color = '#28283e';
+          dotMain.classList.remove('up');
+          dotFlask.classList.remove('up');
+          dotExpress.classList.remove('up');
+        }
+      });
+
+      // Panel switching
+      const dockBtns = document.querySelectorAll('.dock-btn');
+      const panels = {
+        dashboard: { el: null, open: () => { closeAllPanels(); } },
+        config: { el: document.getElementById('panel-config'), open: () => { closeAllPanels(); panels.config.el.classList.remove('translate-x-full'); } },
+        brain: { el: document.getElementById('panel-brain'), open: () => { closeAllPanels(); panels.brain.el.classList.remove('-translate-x-full'); } }
+      };
+
+      function closeAllPanels() {
+        panels.config.el.classList.add('translate-x-full');
+        panels.brain.el.classList.add('-translate-x-full');
+        dockBtns.forEach(b => b.classList.remove('active'));
+      }
+
+      dockBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const panel = btn.dataset.panel;
+          dockBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          panels[panel].open();
+        });
+      });
+
+      // Close panel buttons
+      document.querySelectorAll('.panel-close').forEach(btn => {
+        btn.addEventListener('click', () => {
+          closeAllPanels();
+          document.querySelector('[data-panel="dashboard"]').classList.add('active');
+        });
+      });
+
+      // Method selection
+      document.querySelectorAll('.method-cell').forEach(cell => {
+        cell.addEventListener('click', () => {
+          document.querySelectorAll('.method-cell').forEach(c => c.classList.remove('active'));
+          cell.classList.add('active');
+        });
+      });
+
+      // Memory dial
+      const dialValue = document.getElementById('dial-value');
+      const dialMinus = document.getElementById('dial-minus');
+      const dialPlus = document.getElementById('dial-plus');
+      const memBars = document.querySelectorAll('.mem-bar');
+      let memory = 1;
+
+      function updateMemory() {
+        dialValue.textContent = memory;
+        memBars.forEach((bar, idx) => {
+          const barNum = idx + 1;
+          const span = bar.querySelector('span');
+          if (barNum <= memory) {
+            bar.style.height = barNum === memory ? '36px' : '28px';
+            bar.classList.add('lit');
+            span.classList.remove('text-transparent');
+            span.classList.add('text-purple-400');
+          } else {
+            bar.style.height = '12px';
+            bar.classList.remove('lit');
+            span.classList.add('text-transparent');
+            span.classList.remove('text-purple-400');
+          }
+        });
+      }
+
+      dialMinus.addEventListener('click', () => { if (memory > 1) { memory--; updateMemory(); } });
+      dialPlus.addEventListener('click', () => { if (memory < 5) { memory++; updateMemory(); } });
+
+      // Drag and drop - improved
+      const poolTags = document.querySelectorAll('.pool-tag');
+      const dropZones = document.querySelectorAll('.slot-drop');
+      let draggedEl = null;
+
+      poolTags.forEach(tag => {
+        tag.addEventListener('dragstart', (e) => {
+          draggedEl = tag;
+          tag.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'copy';
+        });
+        tag.addEventListener('dragend', () => {
+          tag.classList.remove('dragging');
+          draggedEl = null;
+        });
+      });
+
+      dropZones.forEach(zone => {
+        zone.addEventListener('dragenter', (e) => {
+          e.preventDefault();
+          zone.classList.add('drag-over');
+        });
+        zone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'copy';
+        });
+        zone.addEventListener('dragleave', () => {
+          zone.classList.remove('drag-over');
+        });
+        zone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          zone.classList.remove('drag-over');
+          if (draggedEl) {
+            const providerName = draggedEl.querySelector('span:first-child').textContent;
+            const badgeHTML = draggedEl.querySelector('span:last-child').outerHTML;
+            const zoneParent = zone.closest('.slot-zone');
+            
+            zone.innerHTML = `
+              <div class="slot-placed flex items-center justify-between w-full">
+                <div class="flex items-center gap-1.5 px-2 py-1 rounded-md border" style="border-color: rgba(124,58,237,0.35); background: rgba(124,58,237,0.08);">
+                  <span style="font-size: 10px; font-weight: 600; color: #a78bfa; letter-spacing: 0.3px;">${providerName}</span>
+                  ${badgeHTML}
+                </div>
+                <button class="remove-btn w-5 h-5 flex items-center justify-center rounded transition-all" style="border: 1px solid rgba(248,113,113,0.2); background: rgba(248,113,113,0.06); color: #f87171; font-size: 12px;" onmouseover="this.style.background='rgba(248,113,113,0.15)';this.style.borderColor='rgba(248,113,113,0.4)';" onmouseout="this.style.background='rgba(248,113,113,0.06)';this.style.borderColor='rgba(248,113,113,0.2)';">&#x2715;</button>
+              </div>
+            `;
+            zone.style.background = 'rgba(124,58,237,0.03)';
+            zoneParent.style.borderColor = 'rgba(124,58,237,0.2)';
+            zoneParent.classList.add('has-provider');
+            
+            const cfgId = zone.id.replace('drop-', 'cfg-');
+            const cfgDiv = document.getElementById(cfgId);
+            if (cfgDiv) {
+              cfgDiv.style.maxHeight = '300px';
+              cfgDiv.style.padding = '12px';
+              cfgDiv.innerHTML = `
+                <div style="border-top: 1px solid rgba(50,35,90,0.1); padding-top: 12px;">
+                  <span style="font-size: 8px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(50,35,90,0.1);">${providerName} Config</span>
+                  <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div>
+                      <label style="font-size: 8px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 1.2px; display: block; margin-bottom: 5px;">API Key</label>
+                      <input type="password" placeholder="Enter key..." style="width: 100%; background: rgba(12,12,20,0.6); border: 1px solid rgba(50,35,90,0.1); color: #b0b5c8; padding: 9px 12px; border-radius: 6px; font-size: 11px; font-family: 'Cascadia Code', 'Consolas', monospace; outline: none;" onfocus="this.style.borderColor='rgba(124,58,237,0.3)';this.style.boxShadow='0 0 0 2px rgba(124,58,237,0.05)'" onblur="this.style.borderColor='rgba(50,35,90,0.1)';this.style.boxShadow='none'">
+                    </div>
+                    <div>
+                      <label style="font-size: 8px; font-weight: 700; color: #4a4a70; text-transform: uppercase; letter-spacing: 1.2px; display: block; margin-bottom: 5px;">Model</label>
+                      <input type="text" placeholder="model-name" style="width: 100%; background: rgba(12,12,20,0.6); border: 1px solid rgba(50,35,90,0.1); color: #b0b5c8; padding: 9px 12px; border-radius: 6px; font-size: 11px; font-family: 'Cascadia Code', 'Consolas', monospace; outline: none;" onfocus="this.style.borderColor='rgba(124,58,237,0.3)';this.style.boxShadow='0 0 0 2px rgba(124,58,237,0.05)'" onblur="this.style.borderColor='rgba(50,35,90,0.1)';this.style.boxShadow='none'">
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
+            
+            // Add remove functionality
+            zone.querySelector('.remove-btn')?.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              zone.innerHTML = '<span style="font-size: 9px; color: #28283e; letter-spacing: 1px; text-transform: uppercase;">drop provider here</span>';
+              zone.style.background = 'transparent';
+              zoneParent.style.borderColor = 'rgba(50,35,90,0.1)';
+              zoneParent.classList.remove('has-provider');
+              cfgDiv.style.maxHeight = '0';
+              cfgDiv.style.padding = '0';
+              cfgDiv.innerHTML = '';
+            });
+          }
+        });
+      });
+
+      // Hide hint after first interaction
+      const hint = document.getElementById('preview-hint');
+      let hintHidden = false;
+      document.getElementById('app-preview-container').addEventListener('click', () => {
+        if (!hintHidden) {
+          hint.style.opacity = '0';
+          hintHidden = true;
+        }
+      }, { once: true });
+    })();
+    </script>
 
     <div class="section-divider"></div>
 
@@ -1036,6 +1553,53 @@
           });
         }
       })();
+    </script>
+
+    <script>
+    (function(){
+      const MAX_TILT = 12;
+      const LERP     = 0.08;
+      document.querySelectorAll('.feature-card').forEach(function(card){
+        card.style.transitionDelay = '0s';
+        let targetX = 0, targetY = 0, curX = 0, curY = 0;
+        let hovering = false, rafId = null;
+
+        function animate(){
+          curX += (targetX - curX) * LERP;
+          curY += (targetY - curY) * LERP;
+          const scale = hovering ? 1.03 : 1;
+          card.style.transform = 'perspective(800px) rotateX(' + curX.toFixed(3) + 'deg) rotateY(' + curY.toFixed(3) + 'deg) scale(' + scale + ')';
+          const stillMoving = Math.abs(targetX - curX) > 0.01 || Math.abs(targetY - curY) > 0.01;
+          if (stillMoving || hovering) {
+            rafId = requestAnimationFrame(animate);
+          } else {
+            card.style.transform = '';
+            rafId = null;
+          }
+        }
+
+        function startLoop(){ if (!rafId) rafId = requestAnimationFrame(animate); }
+
+        card.addEventListener('mousemove', function(e){
+          hovering = true;
+          const r = card.getBoundingClientRect();
+          const x = (e.clientX - r.left) / r.width  - 0.5;
+          const y = (e.clientY - r.top)  / r.height - 0.5;
+          targetX = -y * MAX_TILT;
+          targetY =  x * MAX_TILT;
+          card.style.setProperty('--mx', ((e.clientX - r.left).toFixed(1)) + 'px');
+          card.style.setProperty('--my', ((e.clientY - r.top).toFixed(1)) + 'px');
+          startLoop();
+        });
+
+        card.addEventListener('mouseleave', function(){
+          hovering = false;
+          targetX = 0;
+          targetY = 0;
+          startLoop();
+        });
+      });
+    })();
     </script>
   </body>
 </html>
